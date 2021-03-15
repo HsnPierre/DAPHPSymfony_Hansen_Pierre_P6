@@ -60,11 +60,11 @@ article, aside, figcaption, figure, footer, header, hgroup, main, nav, section {
 
 body {
   margin: 0;
-  font-family: "Merriweather", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
-  font-size: 1rem;
-  font-weight: 400;
+  font-family: "Segoe UI", "Roboto", -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  font-size: 1.25rem;
+  font-weight: 600;
   line-height: 1.5;
-  color: #212529;
+  color: #041C28;
   text-align: left;
   background-color: #fff;
 }
@@ -74,14 +74,17 @@ body {
 }
 
 hr {
+  padding-bottom: 3.5rem;
   box-sizing: content-box;
   height: 0;
   overflow: visible;
 }
 
 h1, h2, h3, h4, h5, h6 {
+  padding-top: 6.5rem;
   margin-top: 0;
-  margin-bottom: 0.5rem;
+  margin-bottom: 0.75rem;
+  color: #041C28;
 }
 
 p {
@@ -10036,7 +10039,7 @@ hr.light {
 @media (min-width: 992px) {
   #mainNav {
     box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
-    background-color: rgba(255, 255, 255, 0.65);
+    background-color: rgba(255, 255, 255, 0.35);
   }
   #mainNav .navbar-brand {
     color: rgba(255, 255, 255, 0.7);
@@ -10075,7 +10078,7 @@ hr.light {
 header.masthead {
   padding-top: 10rem;
   padding-bottom: calc(10rem - 4.5rem);
-  background: linear-gradient(to bottom, rgba(122, 153, 164, 0.4), rgba(122, 153, 164, 0.4)), url("/assets/img/snowboard-masthead.jpg");
+  background: linear-gradient(to bottom, rgba(122, 153, 164, 0.5), rgba(122, 153, 164, 0.5)), url("/assets/img/snowboard-masthead.jpg");
   background-position: center;
   background-repeat: no-repeat;
   background-attachment: scroll;
@@ -10138,6 +10141,19 @@ header.masthead h1 {
 }
 #portfolio .container-fluid .portfolio-box:hover .portfolio-box-caption, #portfolio .container-sm .portfolio-box:hover .portfolio-box-caption, #portfolio .container-md .portfolio-box:hover .portfolio-box-caption, #portfolio .container-lg .portfolio-box:hover .portfolio-box-caption, #portfolio .container-xl .portfolio-box:hover .portfolio-box-caption {
   opacity: 1;
+}
+
+#resume {
+  display: block;
+  justify-content: center;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  text-align: center;
+  color: #0C5E6A;
+  background: rgba(26, 102, 116, 0.3);
+  text-align: center;
+  padding-bottom: 1.75rem;
 }
 
 .text-white-75 {
