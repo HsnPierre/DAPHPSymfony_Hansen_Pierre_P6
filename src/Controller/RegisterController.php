@@ -5,7 +5,8 @@ namespace App\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
-use App\Form\RegisterType;
+use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+use App\Form\UserType;
 use App\Entity\User;
 
 class RegisterController extends AbstractController
@@ -13,22 +14,31 @@ class RegisterController extends AbstractController
     /**
      * Page d'enregistrement
      *
-     * @Route("/register", name="register")
+     * @Route("/register", name="user.register")
      */
-    public function register(Request $request)
+    public function register(Request $request, UserPasswordEncoderInterface $passwordEncoder)
     {
         $user = new User();
         
-        $form = $this->createForm(RegisterType::class, $user);
+        $form = $this->createForm(UserType::class, $user);
 
         $form->handleRequest($request);
 
         if($form->isSubmitted() && $form->isValid()) {
-            dump($user);
+
+            $password = $passwordEncoder->encodePassword($user, $user->getPlainPassword());
+            $user->setPassword($password);
+
+            $em = $this->getDoctrine()->getManager();
+
+            $em->persist($user);
+            $em->flush();
+
+            return $this->redirectToRoute('login');
         }
 
         return $this->render('register/index.html.twig', array(
-            'form' => $form->createView(),
+            'registerform' => $form->createView(),
         ));
     }
 }

@@ -9,20 +9,21 @@
     <section id="register">
             <h2 class="text-center mt-0">Inscription</h2>
             <hr class="divider my-4" />
-            {{ form_start(form, {'attr': {'novalidate': 'novalidate', 'class': 'container'}}) }}
+            {{ form_start(registerform, {'attr': {'novalidate': 'novalidate', 'class': 'container'}}) }}
                 <div class="row row-cols-2">
-                    {{ form_row(form.name, {'class': 'col'}) }}
-                    {{ form_row(form.surname, {'class': 'col'}) }}
+                    {{ form_row(registerform.name, {'class': 'col', 'label': 'Nom'}) }}
+                    {{ form_row(registerform.surname, {'class': 'col', 'label': 'Prénom'}) }}
                 </div>
                 <div class="row row-cols-1">
-                    {{ form_row(form.username, {'class': 'col'}) }}
-                    {{ form_row(form.mail, {'class': 'col'}) }}
-                    {{ form_row(form.password, {'class': 'col'}) }}
+                    {{ form_row(registerform.username, {'class': 'col', 'label': 'Pseudonyme'}) }}
+                    {{ form_row(registerform.mail, {'class': 'col', 'label': 'Adresse mail'}) }}
+                    {{ form_row(registerform.plainPassword, {'class': 'col', 'label': 'Mot de passe'}) }}
+                    
                 </div>
                 
                 <div class="text-center">
                     <button type="submit" class="btn btn-primary">S'inscrire</button>
                 </div>
-            {{ form_end(form) }}
+            {{ form_end(registerform) }}
     </section>
 {% endblock %}

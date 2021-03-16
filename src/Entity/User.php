@@ -5,13 +5,17 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
- * @ORM\Entity(repositoryClass="App\Repository\TrickRepository")
+ * @ORM\Entity
  * @ORM\Table(name="user")
+ * @UniqueEntity(fields="mail", message="L'adresse mail est déjà utilisée.")
+ * @UniqueEntity(fields="username", message="Le pseudo est déjà utilisé.")
  */
 
- class User
+ class User implements UserInterface
  {
     /**
      * @ORM\Id
@@ -52,10 +56,10 @@ use Symfony\Component\Validator\Constraints as Assert;
      * )
      */
     private $mail;
-    
+
     /**
-     * @ORM\Column(type="string")
      * @Assert\NotBlank(message = "Le mot de passe ne peut être vide.")
+     * @Assert\Length(max=4096)
      * @Assert\Regex(
      *      pattern = "/^(?=.*[!@#$%^&*-])(?=.*[0-9])(?=.*[A-Z])(?=.*[a-z]).{12,}$/",
      *      match = true,
@@ -63,23 +67,32 @@ use Symfony\Component\Validator\Constraints as Assert;
      *      
      * )
      */
+    private $plainPassword;
+    
+    /**
+     * @ORM\Column(type="string")
+     */
     private $password;
 
     /**
      * @ORM\Column(type="string")
      */
-    private $profilepic;
+    private $profilepic = "https://www.heberger-image.fr/images/2021/01/13/pic9541eea855b1306b.png";
 
     /**
      * @ORM\Column(type="boolean")
      */
-    private $rgpd;
+    private $rgpd = '1';
 
     /**
      * @ORM\Column(type="datetime")
      */
     private $date;
 
+    public function __construct()
+    {
+        $this->date = new \DateTime();
+    }
 
     /**
      * Get the value of id
@@ -147,6 +160,11 @@ use Symfony\Component\Validator\Constraints as Assert;
     public function getUsername()
     {
         return $this->username;
+    }
+
+    public function getSalt()
+    {
+        return null;
     }
 
     /**
@@ -259,5 +277,34 @@ use Symfony\Component\Validator\Constraints as Assert;
         $this->date = $date;
 
         return $this;
+    }
+
+    /**
+     * Get the value of plainPassword
+     */ 
+    public function getPlainPassword()
+    {
+        return $this->plainPassword;
+    }
+
+    /**
+     * Set the value of plainPassword
+     *
+     * @return  self
+     */ 
+    public function setPlainPassword($plainPassword)
+    {
+        $this->plainPassword = $plainPassword;
+
+        return $this;
+    }
+
+    public function getRoles()
+    {
+        return array('ROLE_USER');
+    }
+
+    public function eraseCredentials()
+    {
     }
  }
