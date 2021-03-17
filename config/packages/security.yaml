@@ -5,14 +5,25 @@ security:
             entity:
                 class: App\Entity\User
                 property: username
+        in_memory:
+            memory:
+                users:
+                    user: { password: userpass, roles: [ 'ROLE_USER' ] }
+                    admin: { password: adminpass, roles: [ 'ROLE_ADMIN' ] }
     firewalls:
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
         main:
+            pattern: ^/
             anonymous: true
             lazy: true
             provider: our_db_provider
+            logout:
+                path: security_logout
+            guard:
+                    authenticators:
+                        - App\Security\FormLoginAuthenticator
 
             # activate different ways to authenticate
             # https://symfony.com/doc/current/security.html#firewalls-authentication
@@ -28,3 +39,6 @@ security:
     encoders:
         App\Entity\User: 
             algorithm: bcrypt
+    role_hierarchy:
+        ROLE_ADMIN: ROLE_USER
+        ROLE_SUPER_ADMIN: [ROLE_USER, ROLE_ADMIN, ROLE_ALLOWED_TO_SWITCH]

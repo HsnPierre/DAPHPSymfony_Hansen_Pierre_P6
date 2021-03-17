@@ -9,7 +9,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
  * @ORM\Table(name="user")
  * @UniqueEntity(fields="mail", message="L'adresse mail est déjà utilisée.")
  * @UniqueEntity(fields="username", message="Le pseudo est déjà utilisé.")
@@ -78,6 +78,11 @@ use Symfony\Component\Security\Core\User\UserInterface;
      * @ORM\Column(type="string")
      */
     private $profilepic = "https://www.heberger-image.fr/images/2021/01/13/pic9541eea855b1306b.png";
+
+    /**
+     * @ORM\Column(type="json")
+     */
+    private $roles = [];
 
     /**
      * @ORM\Column(type="boolean")
@@ -301,7 +306,18 @@ use Symfony\Component\Security\Core\User\UserInterface;
 
     public function getRoles()
     {
-        return array('ROLE_USER');
+        $roles = $this->roles;
+
+        if (empty($roles)) {
+            $roles[] = 'ROLE_USER';
+        }
+
+        return array_unique($roles);
+    }
+
+    public function setRoles(array $roles): void
+    {
+        $this->roles = $roles;
     }
 
     public function eraseCredentials()
