@@ -12,14 +12,14 @@ use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 
-class UserType extends AbstractType
+class RegisterType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('name', null, ['help' => "Votre nom"])
-            ->add('surname', null, ['help' => "Votre prénom"])
-            ->add('username', null, ['help' => "Votre pseudonyme"])
+            ->add('name', TextType::class, ['help' => "Votre nom"])
+            ->add('surname', TextType::class, ['help' => "Votre prénom"])
+            ->add('username', TextType::class, ['help' => "Votre pseudonyme"])
             ->add('mail', RepeatedType::class, [
                 'type' => EmailType::class, 
                 'invalid_message' => 'Les deux adresses doivent être identiques',

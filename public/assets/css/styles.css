@@ -74,16 +74,19 @@ body {
 }
 
 hr {
-  padding-bottom: 3.5rem;
+  padding-bottom: 2.5rem;
   box-sizing: content-box;
   height: 0;
   overflow: visible;
 }
 
 h1, h2, h3, h4, h5, h6 {
-  padding-top: 6.5rem;
   margin-top: 0;
   margin-bottom: 0.75rem;
+}
+
+h1, h2 {
+  padding-top: 6.5rem;
   color: #041C28;
 }
 
@@ -550,8 +553,8 @@ pre code {
 .container-md,
 .container-sm {
   width: 100%;
-  padding-right: 15px;
-  padding-left: 15px;
+  padding-right: 10px;
+  padding-left: 10px;
   margin-right: auto;
   margin-left: auto;
 }
@@ -10158,4 +10161,38 @@ header.masthead h1 {
 
 .text-white-75 {
   color: rgba(255, 255, 255, 0.75);
+}
+
+.profile-header {
+    transform: translateY(5rem);
+}
+
+#profile {
+  padding-top: 9rem;
+  background: center url("https://www.heberger-image.fr/images/2021/03/19/montagned3c06f4cd8cbf843.jpg");
+}
+
+#profile-box {
+  padding-bottom: 9.5rem;
+}
+
+#profile-box .profile-back {
+  text-align: end;
+}
+
+#profile-pic {
+  padding-left: 1rem;
+}
+
+#profile-pres {
+  padding-left: 1rem;
+}
+
+#profile h5 {
+  color: #041C28;
+}
+
+#banner {
+  position: relative;
+  z-index: 999;
 }

@@ -3,7 +3,12 @@
 namespace App\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+use App\Form\ProfileType;
+use App\Form\ProfilepType;
+use App\Entity\User;
 
 class ProfileController extends AbstractController
 {
@@ -15,5 +20,74 @@ class ProfileController extends AbstractController
     public function index()
     {
         return $this->render('profile/index.html.twig');
+    }
+
+    /**
+     * Modifier le profil
+     * 
+     * @Route("/profile/edit", name="edit_profile")
+     */
+    public function edit(Request $request)
+    {
+        $user = $this->getUser();
+        $user->setPlainPassword('&1Azertyuiop');
+
+        $form = $this->createForm(ProfileType::class, $user);
+
+        $form->handleRequest($request);
+
+        if($form->isSubmitted() && $form->isValid()) {
+            
+            $this->getDoctrine()->getManager()->flush();
+
+            $user->setPlainPassword(null);
+
+            return $this->redirectToRoute('profile');
+        }
+
+        return $this->render('profile/edit.html.twig', array(
+            'profileform' => $form->createView(),
+        ));
+    }
+
+    /**
+     * Modifier le mot de passe
+     * 
+     * @Route("/profile/edit-2", name="edit_password")
+     */
+    public function editPassword(Request $request, UserPasswordEncoderInterface $passwordEncoder)
+    {
+        $user = $this->getUser();
+        $error = null;
+
+        $form = $this->createForm(ProfilepType::class, $user);
+
+        $form->handleRequest($request);
+
+        if(null !== $request->request->get('password1')) {
+            $credentials = [
+                'old' => $request->request->get('password1'),
+                'new' => $request->request->get('password2'),
+                'new2' => $request->request->get('password3'),
+            ];
+
+            if($passwordEncoder->isPasswordValid($user, $credentials['old']) && $form->isSubmitted() && $form->isValid()) {
+
+                $password = $passwordEncoder->encodePassword($user, $user->getPlainPassword());
+                $user->setPassword($password);
+
+                $this->getDoctrine()->getManager()->flush();
+
+                return $this->redirectToRoute('profile');
+            } else {
+                $error = 'Le mot de passe est incorrect';
+            }
+        }
+
+        return $this->render('profile/password.html.twig', [
+            'error' => $error,
+            'passwordform' => $form->createView(),
+            ]
+        );
     }
 }
