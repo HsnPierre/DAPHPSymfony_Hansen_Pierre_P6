@@ -29,10 +29,15 @@
                     <ul class="navbar-nav ml-auto my-2 my-lg-0">
                         <li class="nav-item"><a class="nav-link js-scroll-trigger" href="/">ACCUEIL</a></li>
                         <li class="nav-item"><a class="nav-link js-scroll-trigger" href="#tricks">TRICKS</a></li>
-                        <li class="nav-item"><a class="nav-link js-scroll-trigger" href="/profile">PROFIL</a></li>
-                        <li class="nav-item"><a class="nav-link js-scroll-trigger" href="/login">SE CONNECTER</a></li>
-                        <li class="nav-item"><a class="nav-link js-scroll-trigger" href="/register">S'INSCRIRE</a></li>
-                        <li class="nav-item"><a class="nav-link js-scroll-trigger" href="/logout">DECONNEXION</a></li>
+
+                        {% if is_granted('ROLE_USER') %}
+                            <li class="nav-item"><a class="nav-link js-scroll-trigger" href="/profile">PROFIL</a></li>
+                            <li class="nav-item"><a class="nav-link js-scroll-trigger" href="/logout">DECONNEXION</a></li>
+                        {% else %}
+                            <li class="nav-item"><a class="nav-link js-scroll-trigger" href="/login">SE CONNECTER</a></li>
+                            <li class="nav-item"><a class="nav-link js-scroll-trigger" href="/register">S'INSCRIRE</a></li>
+                        {% endif %}
+
                     </ul>
                 </div>
             </div>

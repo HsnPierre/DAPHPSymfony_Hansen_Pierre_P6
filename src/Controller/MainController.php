@@ -10,7 +10,7 @@ class MainController extends AbstractController
     /**
      * Page d'accueil
      * 
-     * @Route("/", name="accueil")
+     * @Route("/", name="home")
      */
     public function index()
     {

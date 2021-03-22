@@ -16,6 +16,10 @@ class LoginController extends AbstractController
      */
     public function login(AuthenticationUtils $authenticationUtils): Response
     {
+        if($this->getUser()){
+            return $this->redirectToRoute('home');
+        }
+
         $error = $authenticationUtils->getLastAuthenticationError();
 
         $lastUsername = $authenticationUtils->getLastUsername();
@@ -28,7 +32,7 @@ class LoginController extends AbstractController
     }
 
     /**
-     * @Route("/logout", name="logout")
+     * @Route("/logout", name="security_logout")
      */
     public function logout(): void
     {

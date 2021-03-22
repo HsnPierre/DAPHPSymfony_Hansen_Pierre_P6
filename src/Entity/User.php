@@ -308,9 +308,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
     {
         $roles = $this->roles;
 
-        if (empty($roles)) {
-            $roles[] = 'ROLE_USER';
-        }
+        $roles[] = 'ROLE_USER';
 
         return array_unique($roles);
     }
