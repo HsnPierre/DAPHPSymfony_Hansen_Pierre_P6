@@ -15,24 +15,74 @@
                     <div class="profile mr-3">
                         
                         <div class="row" id="profile-pic">
-                            <div class="">
-                                <a href="#imageCollapse" data-toggle="collapse" aria-expanded="false" aria-controls="imageCollapse">
-                                    <img src="{{ app.user.profilePic }}" alt="..." width="130" class="rounded mb-2 img-thumbnail">
-                                </a>
-                            </div>
-                            <div class="collapse col" id="imageCollapse">
-                                <a href="#"><img src="https://nsa40.casimages.com/img/2021/03/19/mini_210319072829662565.png" alt="..." width="70" class="rounded mb-2 img-thumbnail"></a>
-                                <a href="#"><img src="https://nsa40.casimages.com/img/2021/03/19/mini_210319072829751821.png" alt="..." width="70" class="rounded mb-2 img-thumbnail"></a>
-                                <a href="#"><img src="https://nsa40.casimages.com/img/2021/03/19/mini_21031907283016778.png" alt="..." width="70" class="rounded mb-2 img-thumbnail"></a>
-                                <a href="#"><img src="https://nsa40.casimages.com/img/2021/03/19/mini_210319072830281957.png" alt="..." width="70" class="rounded mb-2 img-thumbnail"></a>
-                                <a href="#"><img src="https://nsa40.casimages.com/img/2021/03/19/mini_210319072830540842.png" alt="..." width="70" class="rounded mb-2 img-thumbnail"></a>
-                                <a href="#"><img src="https://nsa40.casimages.com/img/2021/03/19/mini_210319072830813153.png" alt="..." width="70" class="rounded mb-2 img-thumbnail"></a>
-                                <a href="#"><img src="https://nsa40.casimages.com/img/2021/03/19/mini_210319072831107206.png" alt="..." width="70" class="rounded mb-2 img-thumbnail"></a>
-                                <a href="#"><img src="https://nsa40.casimages.com/img/2021/03/19/mini_210319072831377550.png" alt="..." width="70" class="rounded mb-2 img-thumbnail"></a>
-                                <a href="#"><img src="https://nsa40.casimages.com/img/2021/03/19/mini_210319072831648754.png" alt="..." width="70" class="rounded mb-2 img-thumbnail"></a>
-                                <a href="#"><img src="https://nsa40.casimages.com/img/2021/03/19/mini_210319072831918051.png" alt="..." width="70" class="rounded mb-2 img-thumbnail"></a>
-                            </div>
+                        <div class="">
+                            <a href="#imageCollapse" data-toggle="collapse" aria-expanded="false" aria-controls="imageCollapse" class="mainPic">
+                                <img src="{{ app.user.profilePic }}" width="130" class="rounded mb-2 img-thumbnail">
+                            </a>
                         </div>
+                        <div class="collapse row row-cols-auto no-gutters" id="imageCollapse">
+                            {% if (app.user.profilePic != "https://nsa40.casimages.com/img/2021/03/19/mini_210319072829662565.png") %}
+                            <form action="{{ path('profile') }}" method="post" class="col">
+                                <input type="text" id="pic" name="pic" class="form-control" value="https://nsa40.casimages.com/img/2021/03/19/mini_210319072829662565.png" hidden/>
+                                <input type="image" name="pic" src="https://nsa40.casimages.com/img/2021/03/19/mini_210319072829662565.png" width="70" class="rounded mb-2 img-thumbnail">        
+                            </form>
+                            {% endif %}
+                            {% if (app.user.profilePic != "https://nsa40.casimages.com/img/2021/03/19/mini_210319072829751821.png") %}
+                            <form action="{{ path('profile') }}" method="post" class="col">
+                                <input type="text" id="pic" name="pic" class="form-control" value="https://nsa40.casimages.com/img/2021/03/19/mini_210319072829751821.png" hidden/>
+                                <input type="image" name="pic" src="https://nsa40.casimages.com/img/2021/03/19/mini_210319072829751821.png" width="70" class="rounded mb-2 img-thumbnail">
+                            </form>
+                            {% endif %}
+                            {% if (app.user.profilePic != "https://nsa40.casimages.com/img/2021/03/19/mini_21031907283016778.png") %}
+                            <form action="{{ path('profile') }}" method="post" class="col">
+                                <input type="text" id="pic" name="pic" class="form-control" value="https://nsa40.casimages.com/img/2021/03/19/mini_21031907283016778.png" hidden/>
+                                <input type="image" name="pic" src="https://nsa40.casimages.com/img/2021/03/19/mini_21031907283016778.png" width="70" class="rounded mb-2 img-thumbnail">
+                            </form>
+                            {% endif %}
+                            {% if (app.user.profilePic != "https://nsa40.casimages.com/img/2021/03/19/mini_210319072830281957.png") %}
+                            <form action="{{ path('profile') }}" method="post" class="col">
+                                <input type="text" id="pic" name="pic" class="form-control" value="https://nsa40.casimages.com/img/2021/03/19/mini_210319072830281957.png" hidden/>
+                                <input type="image" name="pic" src="https://nsa40.casimages.com/img/2021/03/19/mini_210319072830281957.png" width="70" class="rounded mb-2 img-thumbnail">
+                            </form>
+                            {% endif %}
+                            {% if (app.user.profilePic != "https://nsa40.casimages.com/img/2021/03/19/mini_210319072830540842.png") %}
+                            <form action="{{ path('profile') }}" method="post" class="col">
+                                <input type="text" id="pic" name="pic" class="form-control" value="https://nsa40.casimages.com/img/2021/03/19/mini_210319072830540842.png" hidden/>
+                                <input type="image" name="pic" src="https://nsa40.casimages.com/img/2021/03/19/mini_210319072830540842.png" width="70" class="rounded mb-2 img-thumbnail">
+                            </form>
+                            {% endif %}
+                            {% if (app.user.profilePic != "https://nsa40.casimages.com/img/2021/03/19/mini_210319072830813153.png") %}
+                            <form action="{{ path('profile') }}" method="post" class="col">
+                                <input type="text" id="pic" name="pic" class="form-control" value="https://nsa40.casimages.com/img/2021/03/19/mini_210319072830813153.png" hidden/>
+                                <input type="image" name="pic" src="https://nsa40.casimages.com/img/2021/03/19/mini_210319072830813153.png" width="70" class="rounded mb-2 img-thumbnail">
+                            </form>
+                            {% endif %}
+                            {% if (app.user.profilePic != "https://nsa40.casimages.com/img/2021/03/19/mini_210319072831107206.png") %}
+                            <form action="{{ path('profile') }}" method="post" class="col">
+                                <input type="text" id="pic" name="pic" class="form-control" value="https://nsa40.casimages.com/img/2021/03/19/mini_210319072831107206.png" hidden/>
+                                <input type="image" name="pic" src="https://nsa40.casimages.com/img/2021/03/19/mini_210319072831107206.png" width="70" class="rounded mb-2 img-thumbnail">
+                            </form>
+                            {% endif %}
+                            {% if (app.user.profilePic != "https://nsa40.casimages.com/img/2021/03/19/mini_210319072831377550.png") %}
+                            <form action="{{ path('profile') }}" method="post" class="col">
+                                <input type="text" id="pic" name="pic" class="form-control" value="https://nsa40.casimages.com/img/2021/03/19/mini_210319072831377550.png" hidden/>
+                                <input type="image" name="pic" src="https://nsa40.casimages.com/img/2021/03/19/mini_210319072831377550.png" width="70" class="rounded mb-2 img-thumbnail">
+                            </form>
+                            {% endif %}
+                            {% if (app.user.profilePic != "https://nsa40.casimages.com/img/2021/03/19/mini_210319072831648754.png") %}
+                            <form action="{{ path('profile') }}" method="post" class="col">
+                                <input type="text" id="pic" name="pic" class="form-control" value="https://nsa40.casimages.com/img/2021/03/19/mini_210319072831648754.png" hidden/>
+                                <input type="image" name="pic" src="https://nsa40.casimages.com/img/2021/03/19/mini_210319072831648754.png" width="70" class="rounded mb-2 img-thumbnail">
+                            </form>
+                            {% endif %}
+                            {% if (app.user.profilePic != "https://nsa40.casimages.com/img/2021/03/19/mini_210319072831918051.png") %}
+                            <form action="{{ path('profile') }}" method="post" class="col">
+                                <input type="text" id="pic" name="pic" class="form-control" value="https://nsa40.casimages.com/img/2021/03/19/mini_210319072831918051.png" hidden/>
+                                <input type="image" name="pic" src="https://nsa40.casimages.com/img/2021/03/19/mini_210319072831918051.png" width="70" class="rounded mb-2 img-thumbnail">
+                            </form>
+                            {% endif %}
+                        </div>
+                    </div>
                     </div>
                     <div class="media-body mb-5 text-white" id="profile-pres">
                         <h4 class="mt-0 mb-0 text-white">{{ app.user.username }}</h4>

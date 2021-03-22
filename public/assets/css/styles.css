@@ -10184,6 +10184,20 @@ header.masthead h1 {
   padding-left: 1rem;
 }
 
+#profile-pic img {
+  box-shadow: var(--gray-dark) 0.7;
+}
+
+#profile-pic img:hover {
+  border: 0px;
+  background-color: var(--gray-dark);
+}
+
+#imageCollapse input:hover {
+  border: 0px;
+  background-color: var(--gray-dark);
+}
+
 #profile-pres {
   padding-left: 1rem;
 }

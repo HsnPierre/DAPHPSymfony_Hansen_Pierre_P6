@@ -17,8 +17,22 @@ class ProfileController extends AbstractController
      *
      * @Route("/profile", name="profile")
      */
-    public function index()
+    public function index(Request $request)
     {
+        $user = $this->getUser();
+
+        if(null !== $request->request->get('pic')) {
+            $credentials = [
+                'pic' => $request->request->get('pic'),
+            ];
+
+            $user->setProfilePic($credentials['pic']);
+
+            $this->getDoctrine()->getManager()->flush();
+
+            return $this->redirectToRoute('profile');
+        }
+
         return $this->render('profile/index.html.twig');
     }
 
@@ -89,5 +103,10 @@ class ProfileController extends AbstractController
             'passwordform' => $form->createView(),
             ]
         );
+    }
+
+    public function delete()
+    {
+        
     }
 }
