@@ -1,0 +1,13 @@
+<form action="{{ path('test') }}" method="post">
+            <input type="text" name="pic" value="https://nsa40.casimages.com/img/2021/03/19/mini_210319072829662565.png" disabled>
+            <input type="image" name="pic" src="https://nsa40.casimages.com/img/2021/03/19/mini_210319072829662565.png" width="70" class="rounded mb-2 img-thumbnail" value="https://nsa40.casimages.com/img/2021/03/19/mini_210319072829662565.png">        
+            <input type="image" name="pic" src="https://nsa40.casimages.com/img/2021/03/19/mini_210319072829751821.png" width="70" class="rounded mb-2 img-thumbnail" value="https://nsa40.casimages.com/img/2021/03/19/mini_210319072829751821.png">
+            <input type="image" name="pic" src="https://nsa40.casimages.com/img/2021/03/19/mini_21031907283016778.png" width="70" class="rounded mb-2 img-thumbnail" value="https://nsa40.casimages.com/img/2021/03/19/mini_21031907283016778.png">
+            <input type="image" name="pic" src="https://nsa40.casimages.com/img/2021/03/19/mini_210319072830281957.png" width="70" class="rounded mb-2 img-thumbnail" value="https://nsa40.casimages.com/img/2021/03/19/mini_210319072830281957.png">
+            <input type="image" name="pic" src="https://nsa40.casimages.com/img/2021/03/19/mini_210319072830540842.png" width="70" class="rounded mb-2 img-thumbnail" value="https://nsa40.casimages.com/img/2021/03/19/mini_210319072830540842.png">
+            <input type="image" name="pic" src="https://nsa40.casimages.com/img/2021/03/19/mini_210319072830813153.png" width="70" class="rounded mb-2 img-thumbnail" value="https://nsa40.casimages.com/img/2021/03/19/mini_210319072830813153.png">
+            <input type="image" name="pic" src="https://nsa40.casimages.com/img/2021/03/19/mini_210319072831107206.png" width="70" class="rounded mb-2 img-thumbnail" value="https://nsa40.casimages.com/img/2021/03/19/mini_210319072831107206.png">
+            <input type="image" name="pic" src="https://nsa40.casimages.com/img/2021/03/19/mini_210319072831377550.png" width="70" class="rounded mb-2 img-thumbnail" value="https://nsa40.casimages.com/img/2021/03/19/mini_210319072831377550.png">
+            <input type="image" name="pic" src="https://nsa40.casimages.com/img/2021/03/19/mini_210319072831648754.png" width="70" class="rounded mb-2 img-thumbnail" value="https://nsa40.casimages.com/img/2021/03/19/mini_210319072831648754.png">
+            <input type="image" name="pic" src="https://nsa40.casimages.com/img/2021/03/19/mini_210319072831918051.png" width="70" class="rounded mb-2 img-thumbnail" value="https://nsa40.casimages.com/img/2021/03/19/mini_210319072831918051.png">
+        </form>

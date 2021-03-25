@@ -5,8 +5,7 @@ namespace App\Repository;
 use App\Entity\Trick;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
-
-class TrickRepository extends ServiceRepository
+class TrickRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {

@@ -1,12 +1,103 @@
-{% extends 'trick/layout.html.twig' %}
+{% extends 'layout.html.twig' %}
 
 {% block body_id 'trick_body' %}
 
 {% block body %}
-<section class="page-section" id="services">
-        <div class="container">
-            <h2 class="text-center mt-0">Nom du tricks</h2>
-            <hr class="divider my-4" />
+
+<section id="trick">
+
+    {% if null != error %}
+        <div class="container" id="trick-box">
+            <div class="bg-white shadow rounded overflow-hidden">
+                <div id="background_picture">
+                    <img class="img-fluid" id="bg-picture" src="{{ asset('assets/img/trick/post/snowtrick_1-FS.jpg') }}" />
+                    <div class="bg-light shadow rounded overflow-hidden border-danger banner-title-error text-center">
+                        <h2 class="py-1">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-exclamation-triangle-fill" viewBox="0 0 16 16">
+                                <path d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5zm.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/>
+                            </svg>
+                             Erreur 
+                            <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-exclamation-triangle-fill" viewBox="0 0 16 16">
+                                <path d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5zm.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/>
+                            </svg>
+                        </h2>
+                        <h3 class="px-1">{{ error }}</h2>
+                    </div>
+                </div>
+            </div>
         </div>
+    {% else %}    
+    <div class="container" id="trick-box">
+        <div class="bg-white shadow rounded overflow-hidden">
+            <div id="background_picture">
+                <img class="img-fluid" id="bg-picture" src="{{ trick.mainpic }}" />
+                {% if is_granted('ROLE_USER') %}
+                <div class="user-button">
+                    
+                    <a href="" class="btn btn-primary">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-pencil" viewBox="0 0 16 16">
+                            <path d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168l10-10zM11.207 2.5L13.5 4.793 14.793 3.5 12.5 1.207 11.207 2.5zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293l6.5-6.5zm-9.761 5.175l-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325z"/>
+                        </svg>
+                    </a>
+
+                    <a href="" class="btn btn-danger">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
+                            <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z"/>
+                            <path fill-rule="evenodd" d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4L4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z"/>
+                        </svg>
+                    </a>
+
+                </div>
+                {% endif %}
+                <div class="banner-title text-center">
+                    <h2 class="pb-0 mb-0">{{ trick.category }}</h2>
+                    <h4 class="pb-0 mb-0 text-white">{{ trick.name }}</h4>
+                    <hr class="divider my-4" />
+                </div>
+            </div>
+            <div class="bg-light" id="media">
+                <div class="row row-cols-3">
+                    <div class="col">
+                        <img class="img-thumbnails" src="">
+                    </div>
+                    <div class="col">
+                        <img class="img-thumbnails" src="">
+                    </div>
+                    <div class="col">
+                        <img class="img-thumbnails" src="">
+                    </div>
+                </div>
+            </div>
+            <div class="container" id="main_infos">
+                <h3 class="text-center">{{ trick.name }}</h3>
+                <p class="text-center">{{ trick.content }}</p>
+            </div>
+            <div class="" id="secondary_infos">
+                <p class="text-center">Ecrit par <a href="/profile/{{ trick.author.username }}">{{ trick.author.username }}</a> le {{ date }} {% if trick.editor %} Edité par <a href="/profile/{{ trick.editor.username }}">{{ trick.editor.username }}</a> le {{ dateedit }} {% endif %}</p>
+            </div>
+            <hr>
+            <div class="" id="comments">
+                <div class="text-center" id="add_comments">
+                    {% if is_granted('ROLE_USER') %}
+                        {# {{ form(commentform) }} #}
+                        <form>
+                            <label for="">Laissez un commentaire</label>
+                            <input type="text" id="comments" name="comments" />
+                            <button>Envoyer</button>
+                        </form>
+                    {% else %}
+                        <p><a href="/register">Inscrivez vous</a> ou <a href="/login">connectez vous</a> pour pouvoir commenter</p>
+                    {% endif %}
+                </div>
+                <hr>
+                <div class="bg-light" id="show_comments">
+
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+
 </section>
+
 {% endblock %}

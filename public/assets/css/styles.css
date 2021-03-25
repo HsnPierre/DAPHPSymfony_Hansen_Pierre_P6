@@ -10146,6 +10146,16 @@ header.masthead h1 {
   opacity: 1;
 }
 
+#trick_thumbnails {
+  position: relative;
+}
+
+#trick_thumbnails .user-button {
+  position: absolute;
+  top: 2%;
+  right: 1%;
+}
+
 #resume {
   display: block;
   justify-content: center;
@@ -10206,7 +10216,42 @@ header.masthead h1 {
   color: #041C28;
 }
 
-#banner {
+#trick {
+  padding-top: 9rem;
+  background: center url("https://www.heberger-image.fr/images/2021/03/19/montagned3c06f4cd8cbf843.jpg");
+  background-size: cover;
+  height: 75%;
   position: relative;
-  z-index: 999;
+}
+
+#background_picture {
+  position: relative;
+}
+
+#background_picture img {
+  opacity: 80%;
+}
+
+.banner-title {
+  position: absolute;
+  top: 80%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.banner-title-error {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+#trick .user-button {
+  position: absolute;
+  top: 2%;
+  right: 2%;
+}
+
+#trick .user-button a:hover {
+  text-decoration: none;
 }

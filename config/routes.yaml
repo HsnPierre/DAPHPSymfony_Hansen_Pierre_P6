@@ -1,3 +1,11 @@
 #index:
 #    path: /
 #    controller: App\Controller\DefaultController::index
+
+show_trick:
+    path: /trick/{slug}
+    controller: App\Controller\TrickController::index
+
+add_trick:
+    path: /add
+    controller: App\Controller\TrickController::add

@@ -16,18 +16,4 @@ class MainController extends AbstractController
     {
         return $this->render('main/index.html.twig');
     }
-
-    /**
-     * Page d'accès à un trick
-     * 
-     * @Route(
-     * "/trick/{trickId<\d+>}",
-     * name="trick",
-     * methods={"GET"}
-     * )
-     */
-    public function showTrick($trickId)
-    {
-
-    }
 }
