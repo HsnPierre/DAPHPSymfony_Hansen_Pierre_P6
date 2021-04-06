@@ -10,50 +10,11 @@ use App\Form\TrickType;
 
 class TrickController extends AbstractController
 {
-    /**
-     * Page d'un trick
-     *
-     * @Route("/trick/{slug}", name="show_trick")
-     */
-    public function index(String $slug)
-    {
-        $repository = $this->getDoctrine()->getRepository(Trick::class);
-
-        if($repository->findOneBy(['name' => $slug])){
-        
-            $trick = $repository->findOneBy(['name' => $slug]);
-
-            $date = $trick->getDate('date');
-            $date = $date->format('Y-m-d à H:i:s');
-            $dateedit = null;
-
-            if($trick->getDateedit() !== null){
-                $dateedit = $trick->getDateedit('date');
-                $dateedit = $dateedit->format('Y-m-d à H:i:s');
-            }
-
-            return $this->render('trick/index.html.twig', [
-                    'trick' => $trick,
-                    'date' => $date,
-                    'dateedit' => $dateedit,
-                    'error' => null
-                ]
-            );
-        
-        } else {
-            $error ="Ce trick n'existe pas.";
-
-            return $this->render('trick/index.html.twig', [
-                    'error' => $error
-                ]
-            );
-        }
-    }
-
+    
     /**
      * Page d'ajout d'un trick
      *
-     * @Route("/add", name="add_trick")
+     * @Route("/trick/add", name="add_trick")
      */
     public function add(Request $request)
     {
@@ -70,17 +31,87 @@ class TrickController extends AbstractController
 
         if($form->isSubmitted() && $form->isValid()) {
 
-            $em = $this->getDoctrine()->getManager();
+            $medias = $form->get('media')->getData();
+            $med = [];
 
+            $post_pic = imagecreatefrompng($form->get('mainpic')->getData());
+            $fs_post_pic = imagescale($post_pic, 1120, 560);
+            $thumbnail_post_pic = imagescale($post_pic, 650, 350);
+
+            if ($fs_post_pic !== false && $thumbnail_post_pic !== false) {
+                $post_pic_name = md5(uniqid()).'.png';
+                imagepng($fs_post_pic, 'assets/img/trick/post/'.$post_pic_name);
+                imagepng($thumbnail_post_pic, 'assets/img/trick/thumbnails/'.$post_pic_name);
+
+                $trick->setMainpic($post_pic_name);
+            }
+ 
+            foreach($medias as $media){
+                
+                $fichier = md5(uniqid()).strstr($media, '.');
+
+                $media->move(
+                    $this->getParameter('images_directory'),
+                    $fichier
+                );
+
+                $med[] = $fichier;
+            }
+
+            $trick->setMedia($med);
+
+            $em = $this->getDoctrine()->getManager();
             $em->persist($trick);
             $em->flush();
 
             return $this->redirectToRoute('home');
         }
+
         return $this->render('trick/add.html.twig', [
             'trickform' => $form->createView(),
             ]
         );
+    }
+
+    /**
+     * Page d'un trick
+     *
+     * @Route("/trick/{slug}", name="show_trick")
+     */
+    public function index(String $slug)
+    {
+        $repository = $this->getDoctrine()->getRepository(Trick::class);
+        $trick = $repository->findOneBy(['name' => $slug]);
+
+        if($trick){
+        
+            $date = $trick->getDate('date');
+            $date = $date->format('Y-m-d à H:i:s');
+            $dateedit = null;
+            $mainpic = 'assets/img/trick/post/'.$trick->getMainpic();
+
+            if($trick->getDateedit() !== null){
+                $dateedit = $trick->getDateedit('date');
+                $dateedit = $dateedit->format('Y-m-d à H:i:s');
+            }
+
+            return $this->render('trick/index.html.twig', [
+                    'trick' => $trick,
+                    'date' => $date,
+                    'dateedit' => $dateedit,
+                    'mainpic' => $mainpic,
+                    'error' => null
+                ]
+            );
+        
+        } else {
+            $error ="Ce trick n'existe pas.";
+
+            return $this->render('trick/index.html.twig', [
+                    'error' => $error
+                ]
+            );
+        }
     }
 
     /**
@@ -96,6 +127,7 @@ class TrickController extends AbstractController
         $user = $this->getUser();
         $date = new \Datetime();
         $pic = $trick->getMainpic();
+        $mainpic = 'assets/img/trick/post/'.$trick->getMainpic();
         
         $form = $this->createForm(TrickType::class, $trick);
 
@@ -119,7 +151,8 @@ class TrickController extends AbstractController
 
         return $this->render('trick/edit.html.twig', [
             'trickform' => $form->createView(),
-            'trick' => $trick
+            'trick' => $trick,
+            'mainpic' => $mainpic
             ]
         ); 
     }

@@ -26,10 +26,16 @@ class TrickType extends AbstractType
                     'One Foot' => 'One Foot'
                 ],
             ])
+            ->add('media', FileType::class, [
+                'label' => false,
+                'multiple' => true,
+                'mapped' => false,
+                'required' => false,
+            ])
             ->add('name', TextType::class, ['help' => "Le nom de la figure"])
             ->add('mainpic', FileType::class, [
                 'label' => false,
-                'data_class' => null    
+                'mapped' => false,  
             ])
             ->add('content', TextareaType::class, ['help' => "Une description de la figure et/ou comment la faire"])
         ;

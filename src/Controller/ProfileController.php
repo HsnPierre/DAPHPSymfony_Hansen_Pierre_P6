@@ -35,7 +35,7 @@ class ProfileController extends AbstractController
 
         return $this->render('profile/index.html.twig');
     }
-
+    
     /**
      * Modifier le profil
      * 
@@ -103,6 +103,34 @@ class ProfileController extends AbstractController
             'passwordform' => $form->createView(),
             ]
         );
+    }
+
+    /**
+     * Page de profil d'un utilisateur donné
+     *
+     * @Route("/profile/{username}", name="this_user_profile")
+     */
+    public function thisProfile(String $username)
+    {
+        $repository = $this->getDoctrine()->getRepository(User::class);
+
+        if($repository->findOneBy(['username' => $username])){
+
+            $user = $repository->findOneBy(['username' => $username]);
+
+            return $this->render('profile/username.html.twig', [
+                    'user' => $user,
+                    'error' => null
+                ]
+            );
+        } else {
+            $error = "Cet utilisateur n'existe pas.";
+
+            return $this->render('profile/username.html.twig', [
+                'error' => $error
+            ]
+        );
+        }
     }
 
     public function delete()

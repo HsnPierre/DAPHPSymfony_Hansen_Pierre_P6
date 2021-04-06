@@ -1,0 +1,115 @@
+{% extends 'layout.html.twig' %}
+
+{% block title %}Profil{% endblock %}
+
+{% block body_id 'profile_body' %}
+
+{% block body %}
+
+<section id="profile">
+
+    <div class="container" id="profile-box">
+        <div class="bg-white shadow rounded overflow-hidden">
+            <div class="px-4 pt-0 pb-4 bg-dark" id="banner">
+                <div class="media align-items-end profile-header">
+                    <div class="profile mr-3">
+                        
+                        <div class="row" id="profile-pic">
+                        <div class="">
+                            <img src="{{ user.profilePic }}" width="130" class="rounded mb-2 img-thumbnail">
+                        </div>
+                    </div>
+                    </div>
+                    <div class="media-body mb-5 text-white" id="profile-pres">
+                        <h4 class="mt-0 mb-0 text-white">{{ user.username }}</h4>
+                        <p></p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-light p-4 d-flex justify-content-center">
+                <div class="container">
+                    <h3 class="text-center">Profil</h3>
+                    <hr class="divider my-8" />
+                    <div class="row">
+                        <div class="col-sm-5" id="profile_infos">
+                            <div class="card border-secondary mb-3">
+                                <div class="card-body">
+                                    <h4 class="card-header text-center"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#0c5460" class="bi bi-caret-down-square-fill" viewBox="0 0 16 16"><path d="M0 2a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V2zm4 4a.5.5 0 0 0-.374.832l4 4.5a.5.5 0 0 0 .748 0l4-4.5A.5.5 0 0 0 12 6H4z"/></svg> Informations</h4>
+                                    <p class="card-text">
+                                        <div class="row row-cols-2">
+                                            <div class="col">
+                                                <label>Nom</label>
+                                                <input class="form-control" type="text" placeholder="{{ user.name }}" disabled>
+                                            </div>
+                                            <div class="col">
+                                                <label>Prenom</label>
+                                                <input class="form-control" type="text" placeholder="{{ user.surname }}" disabled>
+                                            </div>
+                                        </div>
+                                        <div class="row row-cols-1">
+                                            <div class="col">
+                                                <label>Pseudo</label>
+                                                <input class="form-control" type="text" placeholder="{{ user.username }}" disabled>
+                                                <label>Mail</label> 
+                                                <input class="form-control" type="text" placeholder="{{ user.mail }}" disabled>                                         
+                                            </div>
+                                        </div>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-7" id="profile_post">
+                            <div class="card border-secondary mb-3">
+                                <div class="card-body">
+                                    <div id="portfolio"><h4 class="card-header text-center"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#0c5460" class="bi bi-caret-down-square-fill" viewBox="0 0 16 16"><path d="M0 2a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V2zm4 4a.5.5 0 0 0-.374.832l4 4.5a.5.5 0 0 0 .748 0l4-4.5A.5.5 0 0 0 12 6H4z"/></svg> Posts</h4></div>
+                                    <br>
+                                    <div id="portfolio">
+                                        <div class="container-fluid p-0">
+                                            <div class="row no-gutters">
+                                                <div class="col-lg-4 col-sm-6">
+                                                    <a class="portfolio-box" href="/trick">
+                                                        <img class="img-fluid" src="assets/img/trick/thumbnails/snowtrick_1.png" alt="" />
+                                                        <div class="portfolio-box-caption">
+                                                            <div class="project-category text-white-50">Grab</div>
+                                                            <div class="project-name">Mute</div>
+                                                        </div>
+                                                    </a>
+                                                </div>
+
+                                                <div class="col-lg-4 col-sm-6">
+                                                    <a class="portfolio-box" href="/trick">
+                                                        <img class="img-fluid" src="assets/img/trick/thumbnails/snowtrick_2.png" alt="" />
+                                                        <div class="portfolio-box-caption">
+                                                            <div class="project-category text-white-50">Grab</div>
+                                                            <div class="project-name">Melancholy</div>
+                                                        </div>
+                                                    </a>
+                                                </div>
+
+                                                <div class="col-lg-4 col-sm-6">
+                                                    <a class="portfolio-box" href="/trick">
+                                                        <img class="img-fluid" src="assets/img/trick/thumbnails/snowtrick_3.png" alt="" />
+                                                        <div class="portfolio-box-caption">
+                                                            <div class="project-category text-white-50">Grab</div>
+                                                            <div class="project-name">Tail Grab</div>
+                                                        </div>
+                                                    </a>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</section>
+
+{% endblock %}
