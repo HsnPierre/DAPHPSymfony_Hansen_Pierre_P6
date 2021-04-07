@@ -15,17 +15,9 @@
                     {{ form_row(trickform.mainpic) }}
                 </div>
             </div>
-            <div class="bg-light" id="media">
+            <div class="container bg-light" id="media">
+                {{ form_row(trickform.media, {'label': 'Medias:'}) }}
                 <div class="row row-cols-3">
-                    <div class="col">
-                        <img class="img-thumbnails" src="">
-                    </div>
-                    <div class="col">
-                        <img class="img-thumbnails" src="">
-                    </div>
-                    <div class="col">
-                        <img class="img-thumbnails" src="">
-                    </div>
                 </div>
             </div>
             <div class="container" id="main_infos">

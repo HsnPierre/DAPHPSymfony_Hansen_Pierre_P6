@@ -30,7 +30,7 @@
     <div class="container" id="trick-box">
         <div class="bg-white shadow rounded overflow-hidden">
             <div id="background_picture">
-                <img class="img-fluid" id="bg-picture" src="{{ trick.mainpic }}" />
+                <img class="img-fluid" id="bg-picture" src="{{ asset( mainpic ) }}" />
                 {% if is_granted('ROLE_USER') %}
                 <div class="user-button">
                     

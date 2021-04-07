@@ -9,7 +9,7 @@
     <div class="container" id="trick-box">
         <div class="bg-white shadow rounded overflow-hidden">
             <div id="background_picture">
-                <img class="img-fluid" id="bg-picture" src="{{ trick.mainpic }}" />
+                <img class="img-fluid" id="bg-picture" src="{{ asset( mainpic ) }}" />
                 {{ form_start(trickform, {'attr': {'novalidate': 'novalidate', 'class': 'container'}}) }}
                 <div class="banner-title-error text-center">
                     {{ form_row(trickform.mainpic) }}

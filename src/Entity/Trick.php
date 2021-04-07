@@ -60,11 +60,6 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
      */
     private $date;
 
-    public function __construct()
-    {
-        $this->date = new \DateTime();
-    }
-
     /**
      * @ORM\Column(type="datetime", nullable=true)
      */
@@ -83,9 +78,19 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
     private $editor;
 
     /**
+     * @ORM\Column(type="json", nullable=true)
+     */
+    private $media = [];
+
+    /**
      * @ORM\OneToMany(targetEntity="App\Entity\Comment", mappedBy="trick")
      */
     private $comments;
+
+    public function __construct()
+    {
+        $this->date = new \DateTime();
+    }
 
     /**
      * Get the value of id
@@ -303,6 +308,26 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
     public function setCategory($category)
     {
         $this->category = $category;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of media
+     */ 
+    public function getMedia()
+    {
+        return $this->media;
+    }
+
+    /**
+     * Set the value of media
+     *
+     * @return  self
+     */ 
+    public function setMedia($media)
+    {
+        $this->media = $media;
 
         return $this;
     }
