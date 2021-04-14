@@ -87,12 +87,17 @@ use Symfony\Component\Security\Core\User\UserInterface;
     /**
      * @ORM\Column(type="boolean")
      */
-    private $rgpd = '1';
+    private $rgpd;
 
     /**
      * @ORM\Column(type="datetime")
      */
     private $date;
+
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $public = '0';
 
     public function __construct()
     {
@@ -320,5 +325,25 @@ use Symfony\Component\Security\Core\User\UserInterface;
 
     public function eraseCredentials()
     {
+    }
+
+    /**
+     * Get the value of public
+     */ 
+    public function getPublic()
+    {
+        return $this->public;
+    }
+
+    /**
+     * Set the value of public
+     *
+     * @return  self
+     */ 
+    public function setPublic($public)
+    {
+        $this->public = $public;
+
+        return $this;
     }
  }

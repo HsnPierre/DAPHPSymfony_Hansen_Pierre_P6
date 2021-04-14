@@ -9,6 +9,8 @@ use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use App\Form\ProfileType;
 use App\Form\ProfilepType;
 use App\Entity\User;
+use App\Entity\Trick;
+use App\Entity\Comment;
 
 class ProfileController extends AbstractController
 {
@@ -19,7 +21,13 @@ class ProfileController extends AbstractController
      */
     public function index(Request $request)
     {
+        if(!$this->getUser()){
+            return $this->redirectToRoute('security_login');
+        }
+
+        $repository = $this->getDoctrine()->getRepository(Trick::class);
         $user = $this->getUser();
+        $tricks = $repository->findBy(array('author'=>$user->getId()));
 
         if(null !== $request->request->get('pic')) {
             $credentials = [
@@ -33,9 +41,12 @@ class ProfileController extends AbstractController
             return $this->redirectToRoute('profile');
         }
 
-        return $this->render('profile/index.html.twig');
+        return $this->render('profile/index.html.twig', [
+            'tricks' => $tricks,
+            ]
+        );
     }
-
+    
     /**
      * Modifier le profil
      * 
@@ -105,8 +116,77 @@ class ProfileController extends AbstractController
         );
     }
 
-    public function delete()
+    /**
+     * Page de profil d'un utilisateur donné
+     *
+     * @Route("/profile/{username}", name="this_user_profile")
+     */
+    public function thisProfile(String $username, Request $request)
     {
+        $user_repository = $this->getDoctrine()->getRepository(User::class);
+        $trick_repository = $this->getDoctrine()->getRepository(Trick::class);       
+
+        if($user_repository->findOneBy(['username' => $username])){
+
+            $user = $user_repository->findOneBy(['username' => $username]);
+            $tricks = $trick_repository->findBy(array('author'=>$user->getId()));
+
+            if( null !== $request->request->get('delete') ){
+                $this->deleteUser($username);
+            }
+
+            return $this->render('profile/username.html.twig', [
+                    'user' => $user,
+                    'tricks' => $tricks,
+                    'error' => null
+                ]
+            );
+
+        } else {
+            $error = "Cet utilisateur n'existe pas.";
+
+            return $this->render('profile/username.html.twig', [
+                'error' => $error
+            ]
+        );
+        }
+    }
+
+    public function deleteUser(string $username)
+    {
+        $user_repository = $this->getDoctrine()->getRepository(User::class);
+        $trick_repository = $this->getDoctrine()->getRepository(Trick::class); 
+        $comment_repository = $this->getDoctrine()->getRepository(Comment::class);
+
+        $user = $user_repository->findOneBy(['username' => $username]);
+
+        $comments = $comment_repository->findBy(array('author'=>$user->getId()));
+        $tricks = $trick_repository->findBy(array('author'=>$user->getId()));
+
+        $em = $this->getDoctrine()->getManager();
+
+        if($comments !== null){
+
+            foreach($comments as $comment){
+                $em->remove($comment);
+                $em->flush();
+            }
+
+        }
+
+        if($tricks !== null){
+
+            foreach($tricks as $trick){
+                $em->remove($trick);
+                $em->flush();
+            }
+
+        }
+
+        $em->remove($user);
+        $em->flush();
+
+        return $this->redirectToRoute('home');        
         
     }
 }

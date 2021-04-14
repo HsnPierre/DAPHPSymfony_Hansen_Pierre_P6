@@ -1,0 +1,132 @@
+{% extends 'layout.html.twig' %}
+
+{% block title %}Profil{% endblock %}
+
+{% block body_id 'profile_body' %}
+
+{% block body %}
+
+<section id="profile">
+
+
+    {% if null != error %}
+        <div class="container" id="trick-box">
+            <div class="bg-white shadow rounded overflow-hidden">
+                <div id="background_picture">
+                    <img class="img-fluid" id="bg-picture" src="{{ asset('assets/img/error/error_bg.jpg') }}" />
+                    <div class="bg-light shadow rounded overflow-hidden border-danger banner-title-error text-center">
+                        <h2 class="py-1">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-exclamation-triangle-fill" viewBox="0 0 16 16">
+                                <path d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5zm.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/>
+                            </svg>
+                             Erreur 
+                            <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-exclamation-triangle-fill" viewBox="0 0 16 16">
+                                <path d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5zm.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/>
+                            </svg>
+                        </h2>
+                        <h3 class="px-1">{{ error }}</h2>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% else %}
+    <div class="container" id="profile-box">
+        <div class="bg-white shadow rounded overflow-hidden">
+            <div class="px-4 pt-0 pb-4 bg-dark" id="banner">
+                <div class="media align-items-end profile-header">
+                    <div class="profile mr-3">
+                        
+                        <div class="row" id="profile-pic2">
+                        <div class="">
+                            <img src="{{ user.profilePic }}" width="130" class="rounded mb-2 img-thumbnail">
+                            {% if is_granted('ROLE_SUPER_ADMIN') %}
+                                <form method="post">
+                                    <button name="delete" class="btn btn-danger btn-sm btn-block">Supprimer l'utilisateur</button>
+                                </form>
+                            {% endif %}
+                        </div>
+                    </div>
+                    </div>
+                    <div class="media-body mb-5 text-white" id="profile-pres">
+                        <h4 class="mt-0 mb-0 text-white">{{ user.username }}</h4>
+                        <p></p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-light p-4 d-flex justify-content-center">
+                <div class="container">
+                    <h3 class="text-center">Profil</h3>
+                    <hr class="divider my-8" />
+                    <div class="row">
+                        <div class="col-sm-5" id="profile_infos">
+                            <div class="card border-secondary mb-3">
+                                <div class="card-body">
+                                    <h4 class="card-header text-center"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#0c5460" class="bi bi-caret-down-square-fill" viewBox="0 0 16 16"><path d="M0 2a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V2zm4 4a.5.5 0 0 0-.374.832l4 4.5a.5.5 0 0 0 .748 0l4-4.5A.5.5 0 0 0 12 6H4z"/></svg> Informations</h4>
+                                    <p class="card-text">
+                                        {% if user.public != 0 %}
+                                        <div class="row row-cols-2">
+                                            <div class="col">
+                                                <label>Nom</label>
+                                                <input class="form-control" type="text" placeholder="{{ user.name }}" disabled>
+                                            </div>
+                                            <div class="col">
+                                                <label>Prenom</label>
+                                                <input class="form-control" type="text" placeholder="{{ user.surname }}" disabled>
+                                            </div>
+                                        </div>
+                                        {% endif %}
+                                        <div class="row row-cols-1">
+                                            <div class="col">
+                                                <label>Pseudo</label>
+                                                <input class="form-control" type="text" placeholder="{{ user.username }}" disabled>
+                                                {% if user.public != 0 %}
+                                                <label>Mail</label> 
+                                                <input class="form-control" type="text" placeholder="{{ user.mail }}" disabled>                                         
+                                                {% endif %}
+                                            </div>
+                                        </div>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-7" id="profile_post">
+                            <div class="card border-secondary mb-3">
+                                <div class="card-body">
+                                    <div id="portfolio"><h4 class="card-header text-center"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#0c5460" class="bi bi-caret-down-square-fill" viewBox="0 0 16 16"><path d="M0 2a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V2zm4 4a.5.5 0 0 0-.374.832l4 4.5a.5.5 0 0 0 .748 0l4-4.5A.5.5 0 0 0 12 6H4z"/></svg> Posts</h4></div>
+                                    <br>
+                                    <div id="portfolio">
+                                        <div class="container-fluid p-0">
+                                            <div class="row no-gutters">
+
+                                                {% for trick in tricks %}
+         
+                                                    <div class="col-lg-4 col-sm-6" id="trick_thumbnails">
+                                                        <a class="portfolio-box" href="/trick/{{ trick.name }}">
+                                                            <img class="img-fluid" src="{{ asset('assets/img/trick/thumbnails/' ~ trick.mainpic) }}" alt="" />
+                                                            <div class="portfolio-box-caption">
+                                                                <div class="project-category text-white-50">{{ trick.category }}</div>
+                                                                <div class="project-name">{{ trick.name }}</div>
+                                                            </div>
+                                                        </a>
+                                                    </div>
+
+                                                {% endfor %}
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+
+</section>
+
+{% endblock %}

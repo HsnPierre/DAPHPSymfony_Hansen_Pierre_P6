@@ -11,6 +11,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 
 class ProfileType extends AbstractType
 {
@@ -21,6 +22,7 @@ class ProfileType extends AbstractType
             ->add('surname', TextType::class, ['help' => "Votre prénom"])
             ->add('username', TextType::class, ['help' => "Votre pseudonyme"])
             ->add('mail', EmailType::class, [ 'help' => "Votre adresse mail" ])
+            ->add('public', CheckboxType::class, ['label' => 'Autoriser le site à afficher vos nom, prénom et adresse mail sur votre page de profil publique ?'])
         ;
     }
 

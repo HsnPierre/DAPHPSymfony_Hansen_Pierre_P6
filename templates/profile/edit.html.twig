@@ -32,6 +32,9 @@
                                     <h4 class="card-header text-center"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#0c5460" class="bi bi-caret-down-square-fill" viewBox="0 0 16 16"><path d="M0 2a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V2zm4 4a.5.5 0 0 0-.374.832l4 4.5a.5.5 0 0 0 .748 0l4-4.5A.5.5 0 0 0 12 6H4z"/></svg> Mes informations</h4>
                                     <p class="card-text">
                                         {{ form_start(profileform, {'attr': {'novalidate': 'novalidate', 'class': 'container'}}) }}
+                                            <div class="text-center">
+                                                <p>{{ form_row(profileform.public) }}</p>
+                                            </div>
                                             <div class="row row-cols-2">
                                                 {{ form_row(profileform.name, {'class': 'col', 'label': 'Nom'}) }}
                                                 {{ form_row(profileform.surname, {'class': 'col', 'label': 'Prénom'}) }}
