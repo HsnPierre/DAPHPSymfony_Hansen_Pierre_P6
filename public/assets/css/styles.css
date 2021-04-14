@@ -10156,6 +10156,10 @@ header.masthead h1 {
   right: 1%;
 }
 
+#add_button {
+  padding-bottom: 1.5rem;
+}
+
 #resume {
   display: block;
   justify-content: center;
@@ -10254,4 +10258,42 @@ header.masthead h1 {
 
 #trick .user-button a:hover {
   text-decoration: none;
+}
+
+#comment_profile_pic {
+  height: 4rem;
+  width: 4rem;
+  box-shadow: var(--gray-dark) 0.7;
+  border: 0px;
+  background-color: var(--gray-dark);
+}
+
+#div_comment_pp {
+  padding-right: 1rem;
+}
+
+#show_comments {
+  font-size: 0.75rem;
+}
+
+#show_comments h4 {
+  font-size: 1rem;
+}
+
+#one_comment {
+  padding-left: 2.5rem;
+}
+
+#one_comment #comment_profile_pic {
+  height: 3rem;
+  width: 3rem;
+}
+
+#comment_username {
+  padding-right: 0.5rem;
+}
+
+#comment_content {
+  box-shadow: var(--gray-dark) 0.7;
+  padding-bottom: 2rem;
 }

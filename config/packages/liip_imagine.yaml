@@ -7,8 +7,7 @@ liip_imagine:
         cache: ~
 
         post_thumbnail:
-
             quality: 75
             filters:
-                    thumbnail: { size: [750, 350], mode: outbound }
-                    background: { size: [750, 350], position: center, color: '#000000' }
+                thumbnail: { size: [750, 350], mode: outbound }
+                # background: { size: [750, 350], position: center, color: '#000000' }
