@@ -6,7 +6,10 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
 use App\Entity\Trick;
+use App\Entity\User;
+use App\Entity\Comment;
 use App\Form\TrickType;
+use App\Form\CommentType;
 
 class TrickController extends AbstractController
 {
@@ -18,6 +21,10 @@ class TrickController extends AbstractController
      */
     public function add(Request $request)
     {
+        if(!$this->getUser()){
+            return $this->redirectToRoute('security_login');
+        }
+
         $trick = new Trick();
         $user = $this->getUser();
         
@@ -30,18 +37,40 @@ class TrickController extends AbstractController
         }
 
         if($form->isSubmitted() && $form->isValid()) {
-
+            dd(get_defined_vars());
             $medias = $form->get('media')->getData();
             $med = [];
 
-            $post_pic = imagecreatefrompng($form->get('mainpic')->getData());
-            $fs_post_pic = imagescale($post_pic, 1120, 560);
-            $thumbnail_post_pic = imagescale($post_pic, 650, 350);
+            $ext = exif_imagetype($form->get('mainpic')->getData());
+
+            if($ext == 3){
+                $post_pic = imagecreatefrompng($form->get('mainpic')->getData());
+                $fs_post_pic = imagescale($post_pic, 1120, 560);
+                $thumbnail_post_pic = imagescale($post_pic, 650, 350);
+            } elseif($ext == 2){
+                $post_pic = imagecreatefromjpeg($form->get('mainpic')->getData());
+                $fs_post_pic = imagescale($post_pic, 1120, 560);
+                $thumbnail_post_pic = imagescale($post_pic, 650, 350);
+            } else {
+                $erreur = "Le format d'image n'est pas supporté.";
+
+                return $this->render('trick/add.html.twig', [
+                    'trickform' => $form->createView(),
+                    'erreur' => $erreur
+                    ]
+                );
+            }
 
             if ($fs_post_pic !== false && $thumbnail_post_pic !== false) {
-                $post_pic_name = md5(uniqid()).'.png';
-                imagepng($fs_post_pic, 'assets/img/trick/post/'.$post_pic_name);
-                imagepng($thumbnail_post_pic, 'assets/img/trick/thumbnails/'.$post_pic_name);
+                if($ext == 3){
+                    $post_pic_name = md5(uniqid()).'.png';
+                    imagepng($fs_post_pic, 'assets/img/trick/post/'.$post_pic_name);
+                    imagepng($thumbnail_post_pic, 'assets/img/trick/thumbnails/'.$post_pic_name);
+                } elseif($ext == 2){
+                    $post_pic_name = md5(uniqid()).'.jpg';
+                    imagejpeg($fs_post_pic, 'assets/img/trick/post/'.$post_pic_name);
+                    imagejpeg($thumbnail_post_pic, 'assets/img/trick/thumbnails/'.$post_pic_name);
+                }
 
                 $trick->setMainpic($post_pic_name);
             }
@@ -78,10 +107,15 @@ class TrickController extends AbstractController
      *
      * @Route("/trick/{slug}", name="show_trick")
      */
-    public function index(String $slug)
+    public function index(String $slug, Request $request)
     {
-        $repository = $this->getDoctrine()->getRepository(Trick::class);
-        $trick = $repository->findOneBy(['name' => $slug]);
+        $trick_repository = $this->getDoctrine()->getRepository(Trick::class);
+        $comment_repository = $this->getDoctrine()->getRepository(Comment::class);
+
+        $trick = $trick_repository->findOneBy(['name' => $slug]);
+
+        $user = $this->getUser();
+        $comment = new Comment();
 
         if($trick){
         
@@ -95,11 +129,104 @@ class TrickController extends AbstractController
                 $dateedit = $dateedit->format('Y-m-d à H:i:s');
             }
 
+            if($this->getUser()){
+                
+                $form = $this->createForm(CommentType::class, $comment);
+                $form->handleRequest($request);
+    
+                if($form->isSubmitted()){
+                    $comment->setAuthor($user);
+                    $comment->setTrick($trick);
+                }
+                    
+
+                if($form->isSubmitted() && $form->isValid()){
+    
+                    $em = $this->getDoctrine()->getManager();
+                    $em->persist($comment);
+                    $em->flush();
+        
+                }
+            }
+
+            $comments = $comment_repository->findBy(array('trick' => $trick->getId()), array());
+
+            if($comments) {
+
+                $dates_comment = [];
+                foreach($comments as $comment){
+                    $tmp = $comment->getDate('date');
+                    $dates_comment[] = $tmp->format('Y-m-d à H:i:s');
+                }
+
+                if($this->getUser()){
+
+                    return $this->render('trick/index.html.twig', [
+                            'trick' => $trick,
+                            'user' => $user,
+                            'comments' => $comments,
+                            'datecomment' => $dates_comment,
+                            'date' => $date,
+                            'dateedit' => $dateedit,
+                            'mainpic' => $mainpic,
+                            'commentform' => $form->createView(),
+                            'error' => null
+                        ]
+                    );
+
+                } else {
+
+                    return $this->render('trick/index.html.twig', [
+                            'trick' => $trick,
+                            'comments' => $comments,
+                            'datecomment' => $dates_comment,
+                            'date' => $date,
+                            'dateedit' => $dateedit,
+                            'mainpic' => $mainpic,
+                            'error' => null
+                        ]
+                    );
+
+                }
+
+            } else {
+
+                if($this->getUser()){
+
+                    return $this->render('trick/index.html.twig', [
+                            'trick' => $trick,
+                            'user' => $user,
+                            'comments' => null,
+                            'date' => $date,
+                            'dateedit' => $dateedit,
+                            'mainpic' => $mainpic,
+                            'commentform' => $form->createView(),
+                            'error' => null
+                        ]
+                    );
+
+                } else {
+
+                    return $this->render('trick/index.html.twig', [
+                            'trick' => $trick,
+                            'comments' => null,
+                            'date' => $date,
+                            'dateedit' => $dateedit,
+                            'mainpic' => $mainpic,
+                            'error' => null
+                        ]
+                    );
+
+                }
+            }
+            
             return $this->render('trick/index.html.twig', [
                     'trick' => $trick,
+                    'user' => $user,
                     'date' => $date,
                     'dateedit' => $dateedit,
                     'mainpic' => $mainpic,
+                    'commentform' => $form->createView(),
                     'error' => null
                 ]
             );
@@ -121,6 +248,10 @@ class TrickController extends AbstractController
      */
     public function edit(Request $request, String $slug)
     {
+        if(!$this->getUser()){
+            return $this->redirectToRoute('security_login');
+        }
+
         $repository = $this->getDoctrine()->getRepository(Trick::class);
 
         $trick = $repository->findOneBy(['name' => $slug]);
@@ -160,10 +291,5 @@ class TrickController extends AbstractController
     public function delete()
     {
 
-    }
-
-    public function crop()
-    {
-        
     }
 }

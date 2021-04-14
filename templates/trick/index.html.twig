@@ -10,7 +10,7 @@
         <div class="container" id="trick-box">
             <div class="bg-white shadow rounded overflow-hidden">
                 <div id="background_picture">
-                    <img class="img-fluid" id="bg-picture" src="{{ asset('assets/img/trick/post/snowtrick_1-FS.jpg') }}" />
+                    <img class="img-fluid" id="bg-picture" src="{{ asset('assets/img/error/error_bg.jpg') }}" />
                     <div class="bg-light shadow rounded overflow-hidden border-danger banner-title-error text-center">
                         <h2 class="py-1">
                             <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-exclamation-triangle-fill" viewBox="0 0 16 16">
@@ -30,7 +30,7 @@
     <div class="container" id="trick-box">
         <div class="bg-white shadow rounded overflow-hidden">
             <div id="background_picture">
-                <img class="img-fluid" id="bg-picture" src="{{ asset( mainpic ) }}" />
+                <img class="img-fluid" id="bg-picture" src="{{ asset( mainpic ) | imagine_filter('post_thumbnail') }}" />
                 {% if is_granted('ROLE_USER') %}
                 <div class="user-button">
                     
@@ -51,7 +51,7 @@
                 {% endif %}
                 <div class="banner-title text-center">
                     <h2 class="pb-0 mb-0">{{ trick.category }}</h2>
-                    <h4 class="pb-0 mb-0 text-white">{{ trick.name }}</h4>
+                    <h4 class="pb-0 mb-0 bg-primary text-white">{{ trick.name }}</h4>
                     <hr class="divider my-4" />
                 </div>
             </div>
@@ -73,25 +73,58 @@
                 <p class="text-center">{{ trick.content }}</p>
             </div>
             <div class="" id="secondary_infos">
-                <p class="text-center">Ecrit par <a href="/profile/{{ trick.author.username }}">{{ trick.author.username }}</a> le {{ date }} {% if trick.editor %} Edité par <a href="/profile/{{ trick.editor.username }}">{{ trick.editor.username }}</a> le {{ dateedit }} {% endif %}</p>
+                <p class="text-center">Ecrit par <a href="/profile/{{ trick.author.username }}">{{ trick.author.username }}</a> le {{ trick.date | date }} {% if trick.editor %} Edité par <a href="/profile/{{ trick.editor.username }}">{{ trick.editor.username }}</a> le {{ dateedit }} {% endif %}</p>
             </div>
             <hr>
             <div class="" id="comments">
-                <div class="text-center" id="add_comments">
+                <div class="container" id="add_comments">
+                    <h4 class="text-center pb-0 mb-0">Commentaires</h4>
+                    <hr class="divider my-4" />
+
                     {% if is_granted('ROLE_USER') %}
-                        {# {{ form(commentform) }} #}
-                        <form>
-                            <label for="">Laissez un commentaire</label>
-                            <input type="text" id="comments" name="comments" />
-                            <button>Envoyer</button>
-                        </form>
+                        {{ form_start(commentform, {'attr': {'novalidate': 'novalidate', 'class': 'container'}}) }}
+
+                            <div class="container row row-cols-2 no-gutters">
+                                <div class="col-1">
+                                    <img src="{{ user.profilepic }}" class="rounded mb-4 img-thumbnail" id="comment_profile_pic">
+                                </div>
+                                <div class="col-11">
+                                    {{ form_row(commentform.content) }}
+                                </div>
+                            </div>
+                            <div class="text-center">
+                                <button type="submit" class="btn btn-primary btn-sm">Envoyer</a>
+                            </div>
+
+                        {{ form_end(commentform) }}
                     {% else %}
-                        <p><a href="/register">Inscrivez vous</a> ou <a href="/login">connectez vous</a> pour pouvoir commenter</p>
+                        <p class="text-center"><a href="/register">Inscrivez vous</a> ou <a href="/login">connectez vous</a> pour pouvoir commenter</p>
                     {% endif %}
                 </div>
                 <hr>
-                <div class="bg-light" id="show_comments">
+                <div class="container bg-light" id="show_comments">
+                    {% if comments != null %}
+                        {% set i = 0 %}
+                        {% for comment in comments %}
 
+                            <div class="container row row-cols-2 no-gutters" id="one_comment">
+                                <div class="col-auto" id="div_comment_pp">
+                                    <a href="/profile/{{ comment.author.username }}"><img src="{{ comment.author.profilepic }}" class="rounded mb-4 img-thumbnail" id="comment_profile_pic"></a>
+                                </div>
+                                <div class="col-11">
+                                    <div class="row row-cols-1 no-gutters" id="comment_infos">
+                                        <h4 class="col-auto" id="comment_username"><a href="/profile/{{ comment.author.username }}">{{ comment.author.username }}</a></h4>
+                                        <p class="col-auto" id="comment_date">Posté le {{ datecomment[i] }}</p>
+                                        <div class="container row row-cols no-gutters" id="comment_content">
+                                            <p class="pb-0 col-9">{{ comment.content }}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            {% set i = i + 1 %}
+
+                        {% endfor %}
+                    {% endif %}
                 </div>
             </div>
         </div>
