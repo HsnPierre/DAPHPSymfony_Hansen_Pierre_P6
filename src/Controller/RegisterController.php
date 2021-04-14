@@ -23,12 +23,13 @@ class RegisterController extends AbstractController
         }
 
         $user = new User();
+        $erreur = null;
         
         $form = $this->createForm(RegisterType::class, $user);
 
         $form->handleRequest($request);
 
-        if($form->isSubmitted() && $form->isValid()) {
+        if($form->isSubmitted() && $form->isValid() && $request->request->get('rgpd') !== 0) {
 
             $password = $passwordEncoder->encodePassword($user, $user->getPlainPassword());
             $user->setPassword($password);
@@ -39,10 +40,14 @@ class RegisterController extends AbstractController
             $em->flush();
 
             return $this->redirectToRoute('security_login');
+
+        } else if($form->isSubmitted() && $request->request->get('rgpd') == 0) {
+            $erreur = 'Vous devez accepter les conditions pour vous inscrire.';
         }
 
         return $this->render('register/index.html.twig', array(
             'registerform' => $form->createView(),
+            'erreur' => $erreur
         ));
     }
 }

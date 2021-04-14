@@ -18,12 +18,12 @@ class MainController extends AbstractController
     public function index()
     {
         $repository = $this->getDoctrine()->getRepository(Trick::class);
-        $tricks = $repository->findBy(array(), array('date'=>'ASC'));
+        $tricks = $repository->findBy(array(), array('category'=>'ASC'));
 
 
         return $this->render('main/index.html.twig', [
             'tricks' => $tricks,
-        ]
-    );
+            ]
+        );
     }
 }
