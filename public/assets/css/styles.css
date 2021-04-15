@@ -10260,6 +10260,10 @@ header.masthead h1 {
   text-decoration: none;
 }
 
+#media {
+  padding-bottom: 1rem;
+}
+
 #comment_profile_pic {
   height: 4rem;
   width: 4rem;
