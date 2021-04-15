@@ -78,9 +78,9 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
     private $editor;
 
     /**
-     * @ORM\Column(type="json", nullable=true)
+     * @ORM\OneToMany(targetEntity="App\Entity\Media", mappedBy="trick",cascade={"persist"})
      */
-    private $media = [];
+    private $medias;
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Comment", mappedBy="trick")
@@ -90,6 +90,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
     public function __construct()
     {
         $this->date = new \DateTime();
+        $this->medias = new ArrayCollection();
     }
 
     /**
@@ -313,21 +314,32 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
     }
 
     /**
-     * Get the value of media
-     */ 
-    public function getMedia()
+     * @return Collection|Media[]
+     */
+    public function getMedias(): Collection
     {
-        return $this->media;
+        return $this->medias;
     }
 
-    /**
-     * Set the value of media
-     *
-     * @return  self
-     */ 
-    public function setMedia($media)
+    public function addMedia(Media $media): self
     {
-        $this->media = $media;
+        if (!$this->medias->contains($media)) {
+            $this->medias[] = $media;
+            $media->setTrick($this);
+        }
+
+        return $this;
+    }
+
+    public function removeMedia(Media $media): self
+    {
+        if ($this->medias->contains($media)) {
+            $this->medias->removeElement($media);
+            // set the owning side to null (unless already changed)
+            if ($media->getTrick() === $this) {
+                $media->setTrick(null);
+            }
+        }
 
         return $this;
     }

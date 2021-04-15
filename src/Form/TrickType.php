@@ -26,7 +26,7 @@ class TrickType extends AbstractType
                     'One Foot' => 'One Foot'
                 ],
             ])
-            ->add('media', FileType::class, [
+            ->add('medias', FileType::class, [
                 'label' => false,
                 'multiple' => true,
                 'mapped' => false,

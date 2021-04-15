@@ -11,6 +11,7 @@ use App\Form\ProfilepType;
 use App\Entity\User;
 use App\Entity\Trick;
 use App\Entity\Comment;
+use App\Entity\Media;
 
 class ProfileController extends AbstractController
 {
@@ -157,13 +158,29 @@ class ProfileController extends AbstractController
         $user_repository = $this->getDoctrine()->getRepository(User::class);
         $trick_repository = $this->getDoctrine()->getRepository(Trick::class); 
         $comment_repository = $this->getDoctrine()->getRepository(Comment::class);
+        $media_repository = $this->getDoctrine()->getRepository(Media::class);
 
         $user = $user_repository->findOneBy(['username' => $username]);
 
         $comments = $comment_repository->findBy(array('author'=>$user->getId()));
         $tricks = $trick_repository->findBy(array('author'=>$user->getId()));
 
+        $med = [];
+
+        foreach($tricks as $trick){
+            $med = $media_repository->findBy(array('trick'=>$trick->getId()));
+        }
+
         $em = $this->getDoctrine()->getManager();
+
+        if($med[0] !== null){
+
+            for($i = 0; $i < count($med); $i++){
+                $em->remove($med[$i]);
+                $em->flush();
+            }
+            
+        }
 
         if($comments !== null){
 

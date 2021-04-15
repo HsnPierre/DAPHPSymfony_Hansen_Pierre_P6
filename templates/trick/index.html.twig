@@ -6,31 +6,10 @@
 
 <section id="trick">
 
-    {% if null != error %}
-        <div class="container" id="trick-box">
-            <div class="bg-white shadow rounded overflow-hidden">
-                <div id="background_picture">
-                    <img class="img-fluid" id="bg-picture" src="{{ asset('assets/img/error/error_bg.jpg') }}" />
-                    <div class="bg-light shadow rounded overflow-hidden border-danger banner-title-error text-center">
-                        <h2 class="py-1">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-exclamation-triangle-fill" viewBox="0 0 16 16">
-                                <path d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5zm.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/>
-                            </svg>
-                             Erreur 
-                            <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-exclamation-triangle-fill" viewBox="0 0 16 16">
-                                <path d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5zm.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/>
-                            </svg>
-                        </h2>
-                        <h3 class="px-1">{{ error }}</h2>
-                    </div>
-                </div>
-            </div>
-        </div>
-    {% else %}    
     <div class="container" id="trick-box">
         <div class="bg-white shadow rounded overflow-hidden">
             <div id="background_picture">
-                <img class="img-fluid" id="bg-picture" src="{{ asset( mainpic ) | imagine_filter('post_thumbnail') }}" />
+                <img class="img-fluid" id="bg-picture" src="{{ asset('assets/img/trick/post/' ~ trick.mainpic) }}" />
                 {% if is_granted('ROLE_USER') %}
                 <div class="user-button">
                     
@@ -56,16 +35,21 @@
                 </div>
             </div>
             <div class="bg-light" id="media">
+                
                 <div class="row row-cols-3">
-                    <div class="col">
-                        <img class="img-thumbnails" src="">
-                    </div>
-                    <div class="col">
-                        <img class="img-thumbnails" src="">
-                    </div>
-                    <div class="col">
-                        <img class="img-thumbnails" src="">
-                    </div>
+                
+                    {% if trick.medias != null %}
+
+                        {% for media in trick.medias %}
+
+                            <div class="col">
+                                <a href="{{ asset('assets/img/original/' ~ media.name) }}"><img class="img-thumbnails" src="{{ asset('assets/img/trick/post/medias/' ~ media.name) }}"></a>
+                            </div>
+
+                        {% endfor %}
+
+                    {% endif %}
+
                 </div>
             </div>
             <div class="container" id="main_infos">
@@ -73,7 +57,7 @@
                 <p class="text-center">{{ trick.content }}</p>
             </div>
             <div class="" id="secondary_infos">
-                <p class="text-center">Ecrit par <a href="/profile/{{ trick.author.username }}">{{ trick.author.username }}</a> le {{ trick.date | date }} {% if trick.editor %} Edité par <a href="/profile/{{ trick.editor.username }}">{{ trick.editor.username }}</a> le {{ dateedit }} {% endif %}</p>
+                <p class="text-center">Ecrit par <a href="/profile/{{ trick.author.username }}">{{ trick.author.username }}</a> le {{ trick.date | date }} {% if trick.editor %} Edité par <a href="/profile/{{ trick.editor.username }}">{{ trick.editor.username }}</a> le {{ trick.dateedit | date }} {% endif %}</p>
             </div>
             <hr>
             <div class="" id="comments">
@@ -86,7 +70,7 @@
 
                             <div class="container row row-cols-2 no-gutters">
                                 <div class="col-1">
-                                    <img src="{{ user.profilepic }}" class="rounded mb-4 img-thumbnail" id="comment_profile_pic">
+                                    <img src="{{ app.user.profilepic }}" class="rounded mb-4 img-thumbnail" id="comment_profile_pic">
                                 </div>
                                 <div class="col-11">
                                     {{ form_row(commentform.content) }}
@@ -103,9 +87,9 @@
                 </div>
                 <hr>
                 <div class="container bg-light" id="show_comments">
-                    {% if comments != null %}
-                        {% set i = 0 %}
-                        {% for comment in comments %}
+                    {% if trick.comments != null %}
+
+                        {% for comment in trick.comments %}
 
                             <div class="container row row-cols-2 no-gutters" id="one_comment">
                                 <div class="col-auto" id="div_comment_pp">
@@ -114,14 +98,13 @@
                                 <div class="col-11">
                                     <div class="row row-cols-1 no-gutters" id="comment_infos">
                                         <h4 class="col-auto" id="comment_username"><a href="/profile/{{ comment.author.username }}">{{ comment.author.username }}</a></h4>
-                                        <p class="col-auto" id="comment_date">Posté le {{ datecomment[i] }}</p>
+                                        <p class="col-auto" id="comment_date">Posté le {{ comment.date | date }}</p>
                                         <div class="container row row-cols no-gutters" id="comment_content">
                                             <p class="pb-0 col-9">{{ comment.content }}</p>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                            {% set i = i + 1 %}
 
                         {% endfor %}
                     {% endif %}
@@ -129,7 +112,6 @@
             </div>
         </div>
     </div>
-    {% endif %}
 
 </section>
 

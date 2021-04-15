@@ -5,9 +5,11 @@ namespace App\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use App\Entity\Trick;
 use App\Entity\User;
 use App\Entity\Comment;
+use App\Entity\Media;
 use App\Form\TrickType;
 use App\Form\CommentType;
 
@@ -32,15 +34,12 @@ class TrickController extends AbstractController
 
         $form->handleRequest($request);
 
-        if($form->isSubmitted()){
-            $trick->setAuthor($user);
-        }
-
         if($form->isSubmitted() && $form->isValid()) {
-            dd(get_defined_vars());
-            $medias = $form->get('media')->getData();
-            $med = [];
 
+            $trick->setAuthor($user);
+
+            $medias = $form->get('medias')->getData();
+            
             $ext = exif_imagetype($form->get('mainpic')->getData());
 
             if($ext == 3){
@@ -76,18 +75,29 @@ class TrickController extends AbstractController
             }
  
             foreach($medias as $media){
-                
-                $fichier = md5(uniqid()).strstr($media, '.');
 
-                $media->move(
-                    $this->getParameter('images_directory'),
-                    $fichier
-                );
+                $originalFileExt = pathinfo($media->getClientOriginalName(), PATHINFO_EXTENSION);
 
-                $med[] = $fichier;
+                if($originalFileExt == 'jpg' || $originalFileExt == 'jpeg') {
+                    $media_pic = imagecreatefromjpeg($media);
+                    $resize = imagescale($media_pic, 450, 150);
+
+                    $media_pic_name = md5(uniqid()).'.'.$originalFileExt;
+                    imagejpeg($resize, 'assets/img/trick/post/medias/'.$media_pic_name);
+                    imagejpeg($media_pic, 'assets/img/original/'.$media_pic_name);
+                } else if($originalFileExt == 'png') {
+                    $media_pic = imagecreatefrompng($media);
+                    $resize = imagescale($media_pic, 450, 150);
+
+                    $media_pic_name = md5(uniqid()).'.'.$originalFileExt;
+                    imagepng($resize, 'assets/img/trick/post/medias/'.$media_pic_name);
+                    imagepng($media_pic, 'assets/img/original/'.$media_pic_name);
+                }
+
+                $med = new Media();
+                $med->setName($media_pic_name);
+                $trick->addMedia($med);
             }
-
-            $trick->setMedia($med);
 
             $em = $this->getDoctrine()->getManager();
             $em->persist($trick);
@@ -119,123 +129,31 @@ class TrickController extends AbstractController
 
         if($trick){
         
-            $date = $trick->getDate('date');
-            $date = $date->format('Y-m-d à H:i:s');
-            $dateedit = null;
-            $mainpic = 'assets/img/trick/post/'.$trick->getMainpic();
-
-            if($trick->getDateedit() !== null){
-                $dateedit = $trick->getDateedit('date');
-                $dateedit = $dateedit->format('Y-m-d à H:i:s');
-            }
-
             if($this->getUser()){
                 
                 $form = $this->createForm(CommentType::class, $comment);
-                $form->handleRequest($request);
-    
-                if($form->isSubmitted()){
-                    $comment->setAuthor($user);
-                    $comment->setTrick($trick);
-                }
-                    
+                $form->handleRequest($request);                  
 
                 if($form->isSubmitted() && $form->isValid()){
     
+                    $comment->setAuthor($user);
+                    $comment->setTrick($trick);
+
                     $em = $this->getDoctrine()->getManager();
                     $em->persist($comment);
                     $em->flush();
         
                 }
+
+                return $this->render('trick/index.html.twig', [
+                        'trick' => $trick,
+                        'commentform' => $form->createView(),
+                    ]
+                );
             }
 
-            $comments = $comment_repository->findBy(array('trick' => $trick->getId()), array());
-
-            if($comments) {
-
-                $dates_comment = [];
-                foreach($comments as $comment){
-                    $tmp = $comment->getDate('date');
-                    $dates_comment[] = $tmp->format('Y-m-d à H:i:s');
-                }
-
-                if($this->getUser()){
-
-                    return $this->render('trick/index.html.twig', [
-                            'trick' => $trick,
-                            'user' => $user,
-                            'comments' => $comments,
-                            'datecomment' => $dates_comment,
-                            'date' => $date,
-                            'dateedit' => $dateedit,
-                            'mainpic' => $mainpic,
-                            'commentform' => $form->createView(),
-                            'error' => null
-                        ]
-                    );
-
-                } else {
-
-                    return $this->render('trick/index.html.twig', [
-                            'trick' => $trick,
-                            'comments' => $comments,
-                            'datecomment' => $dates_comment,
-                            'date' => $date,
-                            'dateedit' => $dateedit,
-                            'mainpic' => $mainpic,
-                            'error' => null
-                        ]
-                    );
-
-                }
-
-            } else {
-
-                if($this->getUser()){
-
-                    return $this->render('trick/index.html.twig', [
-                            'trick' => $trick,
-                            'user' => $user,
-                            'comments' => null,
-                            'date' => $date,
-                            'dateedit' => $dateedit,
-                            'mainpic' => $mainpic,
-                            'commentform' => $form->createView(),
-                            'error' => null
-                        ]
-                    );
-
-                } else {
-
-                    return $this->render('trick/index.html.twig', [
-                            'trick' => $trick,
-                            'comments' => null,
-                            'date' => $date,
-                            'dateedit' => $dateedit,
-                            'mainpic' => $mainpic,
-                            'error' => null
-                        ]
-                    );
-
-                }
-            }
-            
             return $this->render('trick/index.html.twig', [
                     'trick' => $trick,
-                    'user' => $user,
-                    'date' => $date,
-                    'dateedit' => $dateedit,
-                    'mainpic' => $mainpic,
-                    'commentform' => $form->createView(),
-                    'error' => null
-                ]
-            );
-        
-        } else {
-            $error ="Ce trick n'existe pas.";
-
-            return $this->render('trick/index.html.twig', [
-                    'error' => $error
                 ]
             );
         }
