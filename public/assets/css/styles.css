@@ -10301,3 +10301,47 @@ header.masthead h1 {
   box-shadow: var(--gray-dark) 0.7;
   padding-bottom: 2rem;
 }
+
+#delete-form {
+  position: fixed;
+  z-index: 2;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: block;
+  background: #fff;
+  width: 40%;
+  padding: 30px;
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.4);
+}
+
+.checkbox input[type=checkbox] {
+  display:none;
+}
+
+.checkbox input[type=checkbox] + label{
+  background:url("/assets/img/eye-slash-fill.svg"); 
+  border: 0px;
+  height: 16px;
+  width: 16px;
+  display:inline-block;
+  padding: 0;
+  cursor: pointer;
+}
+
+.checkbox input[type=checkbox]:checked + label{
+  background: url("/assets/img/eye-fill.svg");
+  height: 16px;
+  width: 16px;
+  display:inline-block;
+  padding: 0;
+}
+
+.checkbox-text{
+  position: relative;
+  font-family: Arial;
+  font-size: 14px;
+  padding: 0 6px;
+  top: -4px;
+  cursor: pointer;
+}
