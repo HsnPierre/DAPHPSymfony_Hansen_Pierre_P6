@@ -95,9 +95,17 @@ use Symfony\Component\Security\Core\User\UserInterface;
     private $date;
 
     /**
-     * @ORM\Column(type="boolean")
+     * @ORM\Column(type="json")
      */
-    private $public = '0';
+    private $public = [];
+
+    private $public_name;
+
+    private $public_surname;
+
+    private $public_username;
+
+    private $public_mail;
 
     public function __construct()
     {
@@ -343,6 +351,86 @@ use Symfony\Component\Security\Core\User\UserInterface;
     public function setPublic($public)
     {
         $this->public = $public;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of public_name
+     */ 
+    public function getPublic_name()
+    {
+        return $this->public_name;
+    }
+
+    /**
+     * Set the value of public_name
+     *
+     * @return  self
+     */ 
+    public function setPublic_name($public_name)
+    {
+        $this->public_name = $public_name;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of public_surname
+     */ 
+    public function getPublic_surname()
+    {
+        return $this->public_surname;
+    }
+
+    /**
+     * Set the value of public_surname
+     *
+     * @return  self
+     */ 
+    public function setPublic_surname($public_surname)
+    {
+        $this->public_surname = $public_surname;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of public_username
+     */ 
+    public function getPublic_username()
+    {
+        return $this->public_username;
+    }
+
+    /**
+     * Set the value of public_username
+     *
+     * @return  self
+     */ 
+    public function setPublic_username($public_username)
+    {
+        $this->public_username = $public_username;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of public_mail
+     */ 
+    public function getPublic_mail()
+    {
+        return $this->public_mail;
+    }
+
+    /**
+     * Set the value of public_mail
+     *
+     * @return  self
+     */ 
+    public function setPublic_mail($public_mail)
+    {
+        $this->public_mail = $public_mail;
 
         return $this;
     }

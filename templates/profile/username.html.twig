@@ -64,23 +64,27 @@
                                 <div class="card-body">
                                     <h4 class="card-header text-center"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#0c5460" class="bi bi-caret-down-square-fill" viewBox="0 0 16 16"><path d="M0 2a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V2zm4 4a.5.5 0 0 0-.374.832l4 4.5a.5.5 0 0 0 .748 0l4-4.5A.5.5 0 0 0 12 6H4z"/></svg> Informations</h4>
                                     <p class="card-text">
-                                        {% if user.public != 0 %}
                                         <div class="row row-cols-2">
+                                            {% if 'name' in user.public %}
                                             <div class="col">
                                                 <label>Nom</label>
-                                                <input class="form-control" type="text" placeholder="{{ user.name }}" disabled>
+                                                <input class="form-control" type="text" placeholder="{{ user.name }}" disabled> 
                                             </div>
+                                            {% endif %}
+                                            {% if 'surname' in user.public %}
                                             <div class="col">
                                                 <label>Prenom</label>
-                                                <input class="form-control" type="text" placeholder="{{ user.surname }}" disabled>
+                                                <input class="form-control" type="text" placeholder="{{ user.surname }}" disabled>   
                                             </div>
+                                            {% endif %}
                                         </div>
-                                        {% endif %}
                                         <div class="row row-cols-1">
                                             <div class="col">
+                                                {% if 'username' in user.public %}
                                                 <label>Pseudo</label>
                                                 <input class="form-control" type="text" placeholder="{{ user.username }}" disabled>
-                                                {% if user.public != 0 %}
+                                                {% endif %}
+                                                {% if 'mail' in user.public %}
                                                 <label>Mail</label> 
                                                 <input class="form-control" type="text" placeholder="{{ user.mail }}" disabled>                                         
                                                 {% endif %}

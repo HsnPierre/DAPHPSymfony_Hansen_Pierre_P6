@@ -57,12 +57,38 @@ class ProfileController extends AbstractController
     {
         $user = $this->getUser();
         $user->setPlainPassword('&1Azertyuiop');
+        $public = [];
 
         $form = $this->createForm(ProfileType::class, $user);
 
         $form->handleRequest($request);
 
         if($form->isSubmitted() && $form->isValid()) {
+
+            $array = $request->request->get('profile');
+
+            if(isset($array['public_name'])){
+                $public[0] = 'name';
+            } else {
+                $public[0] = '0';
+            }
+            if(isset($array['public_surname'])){
+                $public[1] = 'surname';
+            } else {
+                $public[1] = '0';
+            }
+            if(isset($array['public_username'])){
+                $public[2] = 'username';
+            } else {
+                $public[2] = '0';
+            }
+            if(isset($array['public_mail'])){
+                $public[3] = 'mail';
+            } else {
+                $public[3] = '0';
+            }
+
+            $user->setPublic($public);
             
             $this->getDoctrine()->getManager()->flush();
 
@@ -168,7 +194,7 @@ class ProfileController extends AbstractController
         $med = [];
 
         foreach($tricks as $trick){
-            $med = $media_repository->findBy(array('trick'=>$trick->getId()));
+            $med[] = $media_repository->findBy(array('trick'=>$trick->getId()));
         }
 
         $em = $this->getDoctrine()->getManager();
@@ -176,6 +202,8 @@ class ProfileController extends AbstractController
         if($med[0] !== null){
 
             for($i = 0; $i < count($med); $i++){
+                unlink('assets/img/trick/post/medias/'.$med[$i]->getName());
+                unlink('assets/img/original/'.$med[$i]->getName());
                 $em->remove($med[$i]);
                 $em->flush();
             }
@@ -194,6 +222,8 @@ class ProfileController extends AbstractController
         if($tricks !== null){
 
             foreach($tricks as $trick){
+                unlink('assets/img/trick/post/'.$trick->getMainpic());
+                unlink('assets/img/trick/thumbnails/'.$trick->getMainpic());
                 $em->remove($trick);
                 $em->flush();
             }
