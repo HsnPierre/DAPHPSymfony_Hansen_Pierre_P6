@@ -23,13 +23,16 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
     /**
      * @ORM\Column(type="text")
+     * @Assert\NotBlank(
+     *      message = "Le contenu ne peut être vide."
+     * )
      */
     private $content;
 
     /**
      * @ORM\Column(type="boolean")
      */
-    private $rgpd = '1';
+    private $rgpd;
 
     /**
      * @ORM\Column(type="datetime")

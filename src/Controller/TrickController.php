@@ -132,9 +132,28 @@ class TrickController extends AbstractController
             if($this->getUser()){
                 
                 $form = $this->createForm(CommentType::class, $comment);
-                $form->handleRequest($request);                  
+                $form->handleRequest($request);
 
-                if($form->isSubmitted() && $form->isValid()){
+                $erreur = null;
+                
+                $posted_comments = $comment_repository->findBy(['trick' => $trick->getId()]);
+                
+                if($posted_comments !== null){
+                    foreach($posted_comments as $posted_comment){
+                        if($request->request->get('deletecomment') == $posted_comment->getId()){
+                            
+                            $em = $this->getDoctrine()->getManager();
+
+                            $em->remove($posted_comment);
+                            $em->flush();
+
+                            return $this->redirectToRoute('show_trick', ['slug' => $slug]);
+                        }
+                    }
+                }
+
+
+                if($form->isSubmitted() && $form->isValid() && $form->get('rgpd')->getData() !== false){
     
                     $comment->setAuthor($user);
                     $comment->setTrick($trick);
@@ -142,11 +161,16 @@ class TrickController extends AbstractController
                     $em = $this->getDoctrine()->getManager();
                     $em->persist($comment);
                     $em->flush();
+
+                    return $this->redirectToRoute('show_trick', ['slug' => $slug]);
         
+                } elseif($form->isSubmitted() && $form->get('rgpd')->getData() == false) {
+                    $erreur = 'Vous devez accepter les conditions pour commenter.';
                 }
 
                 return $this->render('trick/index.html.twig', [
                         'trick' => $trick,
+                        'erreur' => $erreur,
                         'commentform' => $form->createView(),
                     ]
                 );
@@ -171,27 +195,106 @@ class TrickController extends AbstractController
         }
 
         $repository = $this->getDoctrine()->getRepository(Trick::class);
+        $media_repository = $this->getDoctrine()->getRepository(Media::class);
 
         $trick = $repository->findOneBy(['name' => $slug]);
+        $current_medias = $media_repository->findBy(['trick' => $trick->getId()]);
         $user = $this->getUser();
         $date = new \Datetime();
         $pic = $trick->getMainpic();
-        $mainpic = 'assets/img/trick/post/'.$trick->getMainpic();
         
         $form = $this->createForm(TrickType::class, $trick);
 
         $form->handleRequest($request);
 
-        if($form->isSubmitted()){
-            $trick->setEditor($user);
-            $trick->setDateedit($date);
+        if($current_medias !== null){
+            foreach($current_medias as $current_media){
+                if($request->request->get('deletemedia') == $current_media->getName()){
+                    unlink('assets/img/trick/post/medias/'.$current_media->getName());
+                    unlink('assets/img/original/'.$current_media->getName());
+                    $em = $this->getDoctrine()->getManager();
 
-            if(null === $request->request->get('mainpic')){
-                $trick->setMainpic($pic);
+                    $em->remove($current_media);
+                    $em->flush();
+
+                    return $this->redirectToRoute('edit_trick', ['slug' => $slug]);
+                }
             }
         }
 
         if($form->isSubmitted() && $form->isValid()) {
+
+            $trick->setEditor($user);
+            $trick->setDateedit($date);
+
+            if(null !== $form->get('medias')->getData()){
+                $medias = $form->get('medias')->getData();
+
+                foreach($medias as $media){
+
+                    $originalFileExt = pathinfo($media->getClientOriginalName(), PATHINFO_EXTENSION);
+    
+                    if($originalFileExt == 'jpg' || $originalFileExt == 'jpeg') {
+                        $media_pic = imagecreatefromjpeg($media);
+                        $tmp = imagescale($media_pic, 450, 250);
+                        $resize = imagecrop($tmp, ['x' => 0, 'y' => 0, 'width' => 450, 'height' => 250]);
+    
+                        $media_pic_name = md5(uniqid()).'.'.$originalFileExt;
+                        imagejpeg($resize, 'assets/img/trick/post/medias/'.$media_pic_name);
+                        imagejpeg($media_pic, 'assets/img/original/'.$media_pic_name);
+                    } else if($originalFileExt == 'png') {
+                        $media_pic = imagecreatefrompng($media);
+                        $tmp = imagescale($media_pic, 450, 250);
+                        $resize = imagecrop($tmp, ['x' => 0, 'y' => 0, 'width' => 450, 'height' => 250]);
+    
+                        $media_pic_name = md5(uniqid()).'.'.$originalFileExt;
+                        imagepng($resize, 'assets/img/trick/post/medias/'.$media_pic_name);
+                        imagepng($media_pic, 'assets/img/original/'.$media_pic_name);
+                    }
+    
+                    $med = new Media();
+                    $med->setName($media_pic_name);
+                    $trick->addMedia($med);
+                }
+
+            }
+
+            if(null !== $form->get('mainpic')->getData()){
+                $ext = exif_imagetype($form->get('mainpic')->getData());
+
+                if($ext == 3){
+                    $post_pic = imagecreatefrompng($form->get('mainpic')->getData());
+                    $fs_post_pic = imagescale($post_pic, 1120, 560);
+                    $thumbnail_post_pic = imagescale($post_pic, 650, 350);
+                } elseif($ext == 2){
+                    $post_pic = imagecreatefromjpeg($form->get('mainpic')->getData());
+                    $fs_post_pic = imagescale($post_pic, 1120, 560);
+                    $thumbnail_post_pic = imagescale($post_pic, 650, 350);
+                } else {
+                    $erreur = "Le format d'image n'est pas supporté.";
+    
+                    return $this->render('trick/edit.html.twig', [
+                        'trickform' => $form->createView(),
+                        'erreur' => $erreur
+                        ]
+                    );
+                }
+    
+                if ($fs_post_pic !== false && $thumbnail_post_pic !== false) {
+                    if($ext == 3){
+                        $post_pic_name = md5(uniqid()).'.png';
+                        imagepng($fs_post_pic, 'assets/img/trick/post/'.$post_pic_name);
+                        imagepng($thumbnail_post_pic, 'assets/img/trick/thumbnails/'.$post_pic_name);
+                    } elseif($ext == 2){
+                        $post_pic_name = md5(uniqid()).'.jpg';
+                        imagejpeg($fs_post_pic, 'assets/img/trick/post/'.$post_pic_name);
+                        imagejpeg($thumbnail_post_pic, 'assets/img/trick/thumbnails/'.$post_pic_name);
+                    }
+    
+                    $trick->setMainpic($post_pic_name);
+                }
+
+            }
 
             $em = $this->getDoctrine()->getManager()->flush();
 
@@ -201,13 +304,67 @@ class TrickController extends AbstractController
         return $this->render('trick/edit.html.twig', [
             'trickform' => $form->createView(),
             'trick' => $trick,
-            'mainpic' => $mainpic
             ]
         ); 
     }
 
-    public function delete()
+    /**
+     * Page d'édition d'un trick
+     *
+     * @Route("/trick/{slug}/delete", name="delete_trick")
+     */
+    public function delete(Request $request, string $slug)
     {
+        if($this->getUser()){
 
+            $repository = $this->getDoctrine()->getRepository(Trick::class);
+            $trick = $repository->findOneBy(['name' => $slug]);
+
+            if(null !== $request->request->get('delete')) {
+
+                $comment_repository = $this->getDoctrine()->getRepository(Comment::class);
+                $media_repository = $this->getDoctrine()->getRepository(Media::class);
+
+                $comments = $comment_repository->findBy(['author' => $trick->getId()]);
+                $medias = $media_repository->findBy(['trick' => $trick->getId()]);
+
+                $em = $this->getDoctrine()->getManager();
+
+                if($comments !== null){
+
+                    foreach($comments as $comment){
+                        $em->remove($comment);
+                        $em->flush();
+                    }
+        
+                }
+        
+                if($medias !== null){
+        
+                    foreach($medias as $media){
+                        unlink('assets/img/trick/post/medias/'.$media->getName());
+                        unlink('assets/img/original/'.$media->getName());
+                        $em->remove($media);
+                        $em->flush();
+                    }
+        
+                }
+
+                unlink('assets/img/trick/post/'.$trick->getMainpic());
+                unlink('assets/img/trick/thumbnails/'.$trick->getMainpic());
+                $em->remove($trick);
+                $em->flush();
+
+                return $this->redirectToRoute('home', ['_fragment' => 'tricks']);
+
+            }
+
+        }
+        
+        return $this->render('trick/delete.html.twig', [
+                'trick' => $trick
+            ]
+        ); 
+        
     }
 }

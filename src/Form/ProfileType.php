@@ -22,7 +22,22 @@ class ProfileType extends AbstractType
             ->add('surname', TextType::class, ['help' => "Votre prénom"])
             ->add('username', TextType::class, ['help' => "Votre pseudonyme"])
             ->add('mail', EmailType::class, [ 'help' => "Votre adresse mail" ])
-            ->add('public', CheckboxType::class, ['label' => 'Autoriser le site à afficher vos nom, prénom et adresse mail sur votre page de profil publique ?'])
+            ->add('public_name', CheckboxType::class, [
+                'mapped' => false,
+                'label' => false
+            ])
+            ->add('public_surname', CheckboxType::class, [
+                'mapped' => false,
+                'label' => false
+            ])
+            ->add('public_username', CheckboxType::class, [
+                'mapped' => false,
+                'label' => false
+            ])
+            ->add('public_mail', CheckboxType::class, [
+                'mapped' => false,
+                'label' => false
+            ])
         ;
     }
 
