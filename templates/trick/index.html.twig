@@ -64,8 +64,13 @@
                 <div class="container" id="add_comments">
                     <h4 class="text-center pb-0 mb-0">Commentaires</h4>
                     <hr class="divider my-4" />
+                    
                     {% if erreur != null %}
                         <div class="container text-center alert alert-danger">{{ erreur }}</div>
+                    {% endif %}
+
+                    {% if success != null %}
+                        <div class="container text-center alert alert-success">{{ success }}</div>
                     {% endif %}
 
                     {% if is_granted('ROLE_USER') %}

@@ -6,6 +6,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Symfony\Component\HttpFoundation\Session\Session;
 use App\Entity\Trick;
 use App\Entity\User;
 use App\Entity\Comment;
@@ -29,6 +30,7 @@ class TrickController extends AbstractController
 
         $trick = new Trick();
         $user = $this->getUser();
+        $session = new Session();
         
         $form = $this->createForm(TrickType::class, $trick);
 
@@ -103,7 +105,10 @@ class TrickController extends AbstractController
             $em->persist($trick);
             $em->flush();
 
-            return $this->redirectToRoute('home');
+            
+            $session->set('success', 'Votre post a bien été ajouté.');
+
+            return $this->redirectToRoute('home', ['_fragment' => 'tricks']);
         }
 
         return $this->render('trick/add.html.twig', [
@@ -126,6 +131,9 @@ class TrickController extends AbstractController
 
         $user = $this->getUser();
         $comment = new Comment();
+        $session = new Session();
+
+        $success = null;
 
         if($trick){
         
@@ -147,6 +155,8 @@ class TrickController extends AbstractController
                             $em->remove($posted_comment);
                             $em->flush();
 
+                            $session->set('success', 'Le commentaire a bien été supprimé.');
+
                             return $this->redirectToRoute('show_trick', ['slug' => $slug]);
                         }
                     }
@@ -162,22 +172,34 @@ class TrickController extends AbstractController
                     $em->persist($comment);
                     $em->flush();
 
+                    $session->set('success', 'Le commentaire a bien été publié.');
+
                     return $this->redirectToRoute('show_trick', ['slug' => $slug]);
         
                 } elseif($form->isSubmitted() && $form->get('rgpd')->getData() == false) {
                     $erreur = 'Vous devez accepter les conditions pour commenter.';
                 }
 
+                if(null !== $session->get('success')){
+                    $success = $session->remove('success');
+                }
+
                 return $this->render('trick/index.html.twig', [
                         'trick' => $trick,
                         'erreur' => $erreur,
+                        'success' => $success,
                         'commentform' => $form->createView(),
                     ]
                 );
             }
 
+            if(null !== $session->get('success')){
+                $success = $session->remove('success');
+            }
+
             return $this->render('trick/index.html.twig', [
                     'trick' => $trick,
+                    'success' => $success
                 ]
             );
         }
@@ -202,6 +224,8 @@ class TrickController extends AbstractController
         $user = $this->getUser();
         $date = new \Datetime();
         $pic = $trick->getMainpic();
+        $session = new Session();
+        ;
         
         $form = $this->createForm(TrickType::class, $trick);
 
@@ -298,7 +322,9 @@ class TrickController extends AbstractController
 
             $em = $this->getDoctrine()->getManager()->flush();
 
-            return $this->redirectToRoute('home');
+            $session->set('success', 'Le post a bien été mis à jour.');
+
+            return $this->redirectToRoute('home', ['_fragment' => 'tricks']);
         }
 
         return $this->render('trick/edit.html.twig', [
@@ -319,6 +345,7 @@ class TrickController extends AbstractController
 
             $repository = $this->getDoctrine()->getRepository(Trick::class);
             $trick = $repository->findOneBy(['name' => $slug]);
+            $session = new Session();
 
             if(null !== $request->request->get('delete')) {
 
@@ -354,6 +381,8 @@ class TrickController extends AbstractController
                 unlink('assets/img/trick/thumbnails/'.$trick->getMainpic());
                 $em->remove($trick);
                 $em->flush();
+
+                $session->set('success', 'Le post a bien été supprimé.');
 
                 return $this->redirectToRoute('home', ['_fragment' => 'tricks']);
 
