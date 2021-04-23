@@ -41,8 +41,20 @@ class TrickController extends AbstractController
             $trick->setAuthor($user);
 
             $medias = $form->get('medias')->getData();
-            
             $ext = exif_imagetype($form->get('mainpic')->getData());
+            $delimiter = ";";
+            $videos = [];
+            $thumbnails = [];
+
+            if(strstr($form->get('video')->getData(), $delimiter) !== false){
+                $videos = explode($delimiter, $form->get('video')->getData());
+            } else {
+                $videos[] = $form->get('video')->getData();
+            }
+
+            for($count=0;$count<count($videos);$count++){
+                $thumbnails[] = str_replace("https://youtu.be/", '', $videos[$count]);
+            }
 
             if($ext == 3){
                 $post_pic = imagecreatefrompng($form->get('mainpic')->getData());
@@ -82,14 +94,16 @@ class TrickController extends AbstractController
 
                 if($originalFileExt == 'jpg' || $originalFileExt == 'jpeg') {
                     $media_pic = imagecreatefromjpeg($media);
-                    $resize = imagescale($media_pic, 450, 150);
+                    $tmp = imagescale($media_pic, 320, 180);
+                    $resize = imagecrop($tmp, ['x' => 0, 'y' => 0, 'width' => 320, 'height' => 180]);
 
                     $media_pic_name = md5(uniqid()).'.'.$originalFileExt;
                     imagejpeg($resize, 'assets/img/trick/post/medias/'.$media_pic_name);
                     imagejpeg($media_pic, 'assets/img/original/'.$media_pic_name);
                 } else if($originalFileExt == 'png') {
                     $media_pic = imagecreatefrompng($media);
-                    $resize = imagescale($media_pic, 450, 150);
+                    $tmp = imagescale($media_pic, 320, 180);
+                    $resize = imagecrop($tmp, ['x' => 0, 'y' => 0, 'width' => 320, 'height' => 180]);
 
                     $media_pic_name = md5(uniqid()).'.'.$originalFileExt;
                     imagepng($resize, 'assets/img/trick/post/medias/'.$media_pic_name);
@@ -98,7 +112,20 @@ class TrickController extends AbstractController
 
                 $med = new Media();
                 $med->setName($media_pic_name);
+                $med->setType('image');
                 $trick->addMedia($med);
+            }
+            
+            if(!empty($videos) && !empty($thumbnails)){
+
+                for($count=0;$count<count($videos);$count++){
+                    $med = new Media();
+                    $med->setType('video');
+                    $med->setName($thumbnails[$count]);
+                    $med->setUrl($videos[$count]);
+                    $trick->addMedia($med);
+                }
+
             }
 
             $em = $this->getDoctrine()->getManager();
@@ -223,7 +250,6 @@ class TrickController extends AbstractController
         $current_medias = $media_repository->findBy(['trick' => $trick->getId()]);
         $user = $this->getUser();
         $date = new \Datetime();
-        $pic = $trick->getMainpic();
         $session = new Session();
         ;
         
@@ -233,7 +259,8 @@ class TrickController extends AbstractController
 
         if($current_medias !== null){
             foreach($current_medias as $current_media){
-                if($request->request->get('deletemedia') == $current_media->getName()){
+                if($request->request->get('deletemedia') == $current_media->getName() && $current_media->getType() == 'image'){
+                    
                     unlink('assets/img/trick/post/medias/'.$current_media->getName());
                     unlink('assets/img/original/'.$current_media->getName());
                     $em = $this->getDoctrine()->getManager();
@@ -242,6 +269,16 @@ class TrickController extends AbstractController
                     $em->flush();
 
                     return $this->redirectToRoute('edit_trick', ['slug' => $slug]);
+
+                } elseif($current_media->getType() == 'video'){
+                    
+                    $em = $this->getDoctrine()->getManager();
+
+                    $em->remove($current_media);
+                    $em->flush();
+
+                    return $this->redirectToRoute('edit_trick', ['slug' => $slug]);
+                    
                 }
             }
         }
@@ -250,6 +287,30 @@ class TrickController extends AbstractController
 
             $trick->setEditor($user);
             $trick->setDateedit($date);
+
+            if(null !== $form->get('video')->getData()){
+                $delimiter = ";";
+                $videos = [];
+                $thumbnails = [];
+    
+                if(strstr($form->get('video')->getData(), $delimiter) !== false){
+                    $videos = explode($delimiter, $form->get('video')->getData());
+                } else {
+                    $videos[] = $form->get('video')->getData();
+                }
+    
+                for($count=0;$count<count($videos);$count++){
+                    $thumbnails[] = str_replace("https://youtu.be/", '', $videos[$count]);
+                }
+
+                for($count=0;$count<count($videos);$count++){
+                    $med = new Media();
+                    $med->setType('video');
+                    $med->setName($thumbnails[$count]);
+                    $med->setUrl($videos[$count]);
+                    $trick->addMedia($med);
+                }
+            }
 
             if(null !== $form->get('medias')->getData()){
                 $medias = $form->get('medias')->getData();
@@ -260,16 +321,16 @@ class TrickController extends AbstractController
     
                     if($originalFileExt == 'jpg' || $originalFileExt == 'jpeg') {
                         $media_pic = imagecreatefromjpeg($media);
-                        $tmp = imagescale($media_pic, 450, 250);
-                        $resize = imagecrop($tmp, ['x' => 0, 'y' => 0, 'width' => 450, 'height' => 250]);
+                        $tmp = imagescale($media_pic, 320, 180);
+                        $resize = imagecrop($tmp, ['x' => 0, 'y' => 0, 'width' => 320, 'height' => 180]);
     
                         $media_pic_name = md5(uniqid()).'.'.$originalFileExt;
                         imagejpeg($resize, 'assets/img/trick/post/medias/'.$media_pic_name);
                         imagejpeg($media_pic, 'assets/img/original/'.$media_pic_name);
                     } else if($originalFileExt == 'png') {
                         $media_pic = imagecreatefrompng($media);
-                        $tmp = imagescale($media_pic, 450, 250);
-                        $resize = imagecrop($tmp, ['x' => 0, 'y' => 0, 'width' => 450, 'height' => 250]);
+                        $tmp = imagescale($media_pic, 320, 180);
+                        $resize = imagecrop($tmp, ['x' => 0, 'y' => 0, 'width' => 320, 'height' => 180]);
     
                         $media_pic_name = md5(uniqid()).'.'.$originalFileExt;
                         imagepng($resize, 'assets/img/trick/post/medias/'.$media_pic_name);
@@ -278,6 +339,7 @@ class TrickController extends AbstractController
     
                     $med = new Media();
                     $med->setName($media_pic_name);
+                    $med->setType('image');
                     $trick->addMedia($med);
                 }
 

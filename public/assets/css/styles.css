@@ -10156,6 +10156,12 @@ header.masthead h1 {
   right: 1%;
 }
 
+#trick_thumbnails .edit-button {
+  position: absolute;
+  top: 5%;
+  right: 15%;
+}
+
 #add_button {
   padding-bottom: 1.5rem;
 }

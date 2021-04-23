@@ -27,6 +27,16 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
     private $name;
 
     /**
+     * @ORM\Column(type="json", nullable=true)
+    */
+    private $url;
+
+    /**
+     * @ORM\Column(type="text")
+     */
+    private $type;
+
+    /**
      * @ORM\ManyToOne(targetEntity="Trick", inversedBy="medias")
      * @ORM\JoinColumn(nullable=false)
      */
@@ -88,6 +98,46 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
     public function setTrick($trick)
     {
         $this->trick = $trick;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of url
+     */ 
+    public function getUrl()
+    {
+        return $this->url;
+    }
+
+    /**
+     * Set the value of url
+     *
+     * @return  self
+     */ 
+    public function setUrl($url)
+    {
+        $this->url = $url;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of type
+     */ 
+    public function getType()
+    {
+        return $this->type;
+    }
+
+    /**
+     * Set the value of type
+     *
+     * @return  self
+     */ 
+    public function setType($type)
+    {
+        $this->type = $type;
 
         return $this;
     }

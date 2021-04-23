@@ -30,6 +30,12 @@ class TrickType extends AbstractType
                 'label' => false,
                 'multiple' => true,
                 'mapped' => false,
+                'help' => "Insérez des images, seuls les formats \".jpg\" \".jpeg\" et \".png\" sont acceptés.",
+                'required' => false,
+            ])
+            ->add('video', TextareaType::class, [
+                'mapped' => false,
+                'help' => "Saisissez l'url d'une ou plusieurs vidéo(s), pour en importer plusieurs insérez un \";\" entre chaque lien. Exemple: \"http://url.com;http://url2.com;http://url3.com\"",
                 'required' => false,
             ])
             ->add('name', TextType::class, ['help' => "Le nom de la figure"])

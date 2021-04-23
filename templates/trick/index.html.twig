@@ -42,11 +42,17 @@
 
                         {% for media in trick.medias %}
 
-                            <div class="col">
-                                <a href="{{ asset('assets/img/original/' ~ media.name) }}"><img class="img-thumbnails" src="{{ asset('assets/img/trick/post/medias/' ~ media.name) }}"></a>
-                            </div>
+                            {% if media.type == 'image' %}
+                                <div class="col">
+                                    <a href="{{ asset('assets/img/original/' ~ media.name) }}"><img class="img-thumbnails" src="{{ asset('assets/img/trick/post/medias/' ~ media.name) }}"></a>
+                                </div>
+                            {% elseif media.type == 'video' %}
+                                <div class="col">
+                                    <a href="{{ media.url }}"><img class="img-thumbnails" src="https://img.youtube.com/vi/{{ media.name }}/mqdefault.jpg"></a>
+                                </div>
+                            {% endif %}
 
-                        {% endfor %}
+                        {% endfor %}                        
 
                     {% endif %}
 
