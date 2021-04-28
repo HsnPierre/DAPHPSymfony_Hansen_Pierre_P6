@@ -4,17 +4,6 @@
 
 {% block body %}
 
-    <section id="presentation">
-
-        <div id="resume">
-            <h1 class="text-center mt-0">Snowtricks</h2>
-            <hr class="divider my-4" />
-            <img class="img-fluid" src="assets/img/snowtricks_logo1.png" alt="" />
-            <p class="p-5">Lorem ipsum dolor sit amet, consectetur adipiscing elit. In non ex a lacus condimentum aliquet. In sed dolor at ligula consequat placerat efficitur sit amet purus. Pellentesque laoreet libero est, eget posuere ante faucibus et. Sed at rutrum sem, sit amet rutrum elit. Quisque dictum hendrerit convallis. Nunc vestibulum ante ut facilisis aliquet. Pellentesque ornare lorem ac enim feugiat, eu interdum dolor egestas. Donec sit amet venenatis purus. Vestibulum luctus in purus quis convallis. Quisque efficitur nunc sapien, vitae facilisis nibh suscipit eget. Pellentesque sed sagittis purus, vel tincidunt tellus. Phasellus feugiat placerat lacus quis dignissim. Pellentesque ultrices tempor lacinia. Etiam ac euismod purus, non pulvinar sapien. Praesent semper, nisl in pretium hendrerit, justo purus ullamcorper felis, a mattis eros eros at felis. </p>
-        </div>
-
-    </section>
-
     <section id="tricks">
 
         <div class="container" id="portfolio">
@@ -22,9 +11,9 @@
             <hr class="divider my-4" />
         </div>
 
-        {% if success != null %}
-            <div class="container text-center alert alert-success">{{ success }}</div>
-        {% endif %}
+        {% for message in app.flashes('success') %}
+            <div class="container text-center alert alert-success">{{ message }}</div>
+        {% endfor %}
 
         {% if is_granted('ROLE_USER') %}
             <div class="text-center" id="add_button">

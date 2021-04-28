@@ -1,0 +1,16 @@
+{% extends 'layout.html.twig' %}
+
+{% block title %}Erreur{% endblock %}
+
+{% block body %}
+
+<section id="trick">
+
+    <div class="container text-center bg-white shadow rounded overflow-hidden p-3">
+        <h4>Erreur</h4>
+        <p>La page demandée n'existe pas, vérifiez l'url saisie ou cliquez <a href="{{ path('home') }}">ici</a> pour retourner à la page d'accueil</p>
+    </div>
+
+</section>
+
+{% endblock %}

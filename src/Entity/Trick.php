@@ -51,11 +51,6 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
     private $content;
 
     /**
-     * @ORM\Column(type="boolean")
-     */
-    private $rgpd = '1';
-
-    /**
      * @ORM\Column(type="datetime")
      */
     private $date;

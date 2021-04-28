@@ -22,7 +22,7 @@ class CommentType extends AbstractType
                 ]
             ])
             ->add('rgpd', CheckboxType::class, [
-                'label' => "J'autorise ce site à publier ce commentaire publiquement en mon nom.",
+                'label' => "J'autorise ce site à collecter les informations soumises via le formulaire et de les publier publiquement, ces informations ne seront soumises à aucun usage personnel ou privé.",
                 'required' => true    
             ]
         );
