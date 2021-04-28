@@ -29,8 +29,6 @@ class TrickController extends AbstractController
         }
 
         $trick = new Trick();
-        $user = $this->getUser();
-        $session = new Session();
         
         $form = $this->createForm(TrickType::class, $trick);
 
@@ -38,6 +36,7 @@ class TrickController extends AbstractController
 
         if($form->isSubmitted() && $form->isValid()) {
 
+            $user = $this->getUser();
             $trick->setAuthor($user);
 
             $medias = $form->get('medias')->getData();
@@ -64,14 +63,6 @@ class TrickController extends AbstractController
                 $post_pic = imagecreatefromjpeg($form->get('mainpic')->getData());
                 $fs_post_pic = imagescale($post_pic, 1120, 560);
                 $thumbnail_post_pic = imagescale($post_pic, 650, 350);
-            } else {
-                $erreur = "Le format d'image n'est pas supporté.";
-
-                return $this->render('trick/add.html.twig', [
-                    'trickform' => $form->createView(),
-                    'erreur' => $erreur
-                    ]
-                );
             }
 
             if ($fs_post_pic !== false && $thumbnail_post_pic !== false) {
@@ -132,8 +123,7 @@ class TrickController extends AbstractController
             $em->persist($trick);
             $em->flush();
 
-            
-            $session->set('success', 'Votre post a bien été ajouté.');
+            $this->addFlash('success', 'Votre post a bien été ajouté.');
 
             return $this->redirectToRoute('home', ['_fragment' => 'tricks']);
         }
@@ -158,9 +148,6 @@ class TrickController extends AbstractController
 
         $user = $this->getUser();
         $comment = new Comment();
-        $session = new Session();
-
-        $success = null;
 
         if($trick){
         
@@ -168,8 +155,6 @@ class TrickController extends AbstractController
                 
                 $form = $this->createForm(CommentType::class, $comment);
                 $form->handleRequest($request);
-
-                $erreur = null;
                 
                 $posted_comments = $comment_repository->findBy(['trick' => $trick->getId()]);
                 
@@ -182,7 +167,7 @@ class TrickController extends AbstractController
                             $em->remove($posted_comment);
                             $em->flush();
 
-                            $session->set('success', 'Le commentaire a bien été supprimé.');
+                            $this->addFlash('success', 'Le commentaire a bien été supprimé.');
 
                             return $this->redirectToRoute('show_trick', ['slug' => $slug]);
                         }
@@ -199,34 +184,23 @@ class TrickController extends AbstractController
                     $em->persist($comment);
                     $em->flush();
 
-                    $session->set('success', 'Le commentaire a bien été publié.');
+                    $this->addFlash('success', 'Le commentaire a bien été publié.');
 
                     return $this->redirectToRoute('show_trick', ['slug' => $slug]);
         
                 } elseif($form->isSubmitted() && $form->get('rgpd')->getData() == false) {
-                    $erreur = 'Vous devez accepter les conditions pour commenter.';
-                }
-
-                if(null !== $session->get('success')){
-                    $success = $session->remove('success');
+                    $this->addFlash('error', 'Vous devez accepter les conditions pour commenter.');
                 }
 
                 return $this->render('trick/index.html.twig', [
                         'trick' => $trick,
-                        'erreur' => $erreur,
-                        'success' => $success,
                         'commentform' => $form->createView(),
                     ]
                 );
             }
 
-            if(null !== $session->get('success')){
-                $success = $session->remove('success');
-            }
-
             return $this->render('trick/index.html.twig', [
-                    'trick' => $trick,
-                    'success' => $success
+                    'trick' => $trick
                 ]
             );
         }
@@ -244,44 +218,14 @@ class TrickController extends AbstractController
         }
 
         $repository = $this->getDoctrine()->getRepository(Trick::class);
-        $media_repository = $this->getDoctrine()->getRepository(Media::class);
 
         $trick = $repository->findOneBy(['name' => $slug]);
-        $current_medias = $media_repository->findBy(['trick' => $trick->getId()]);
         $user = $this->getUser();
         $date = new \Datetime();
-        $session = new Session();
-        ;
         
         $form = $this->createForm(TrickType::class, $trick);
 
         $form->handleRequest($request);
-
-        if($current_medias !== null){
-            foreach($current_medias as $current_media){
-                if($request->request->get('deletemedia') == $current_media->getName() && $current_media->getType() == 'image'){
-                    
-                    unlink('assets/img/trick/post/medias/'.$current_media->getName());
-                    unlink('assets/img/original/'.$current_media->getName());
-                    $em = $this->getDoctrine()->getManager();
-
-                    $em->remove($current_media);
-                    $em->flush();
-
-                    return $this->redirectToRoute('edit_trick', ['slug' => $slug]);
-
-                } elseif($current_media->getType() == 'video'){
-                    
-                    $em = $this->getDoctrine()->getManager();
-
-                    $em->remove($current_media);
-                    $em->flush();
-
-                    return $this->redirectToRoute('edit_trick', ['slug' => $slug]);
-                    
-                }
-            }
-        }
 
         if($form->isSubmitted() && $form->isValid()) {
 
@@ -357,11 +301,10 @@ class TrickController extends AbstractController
                     $fs_post_pic = imagescale($post_pic, 1120, 560);
                     $thumbnail_post_pic = imagescale($post_pic, 650, 350);
                 } else {
-                    $erreur = "Le format d'image n'est pas supporté.";
+                    $this->addFlash('error', "Le format d'image n'est pas supporté.");
     
                     return $this->render('trick/edit.html.twig', [
                         'trickform' => $form->createView(),
-                        'erreur' => $erreur
                         ]
                     );
                 }
@@ -384,7 +327,7 @@ class TrickController extends AbstractController
 
             $em = $this->getDoctrine()->getManager()->flush();
 
-            $session->set('success', 'Le post a bien été mis à jour.');
+            $this->addFlash('success', 'Le post a bien été mis à jour.');
 
             return $this->redirectToRoute('home', ['_fragment' => 'tricks']);
         }
@@ -444,7 +387,7 @@ class TrickController extends AbstractController
                 $em->remove($trick);
                 $em->flush();
 
-                $session->set('success', 'Le post a bien été supprimé.');
+                $this->addFlash('success', 'Le post a bien été supprimé.');
 
                 return $this->redirectToRoute('home', ['_fragment' => 'tricks']);
 

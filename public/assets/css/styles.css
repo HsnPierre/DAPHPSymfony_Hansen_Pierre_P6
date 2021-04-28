@@ -10158,8 +10158,14 @@ header.masthead h1 {
 
 #trick_thumbnails .edit-button {
   position: absolute;
-  top: 5%;
-  right: 15%;
+  top: 160px;
+  right: 90px;
+}
+
+#medias_show .video-icon {
+  position: absolute;
+  top: 4rem;
+  right: 9.25rem;
 }
 
 #add_button {
@@ -10170,13 +10176,10 @@ header.masthead h1 {
   display: block;
   justify-content: center;
   flex-direction: column;
-  width: 100%;
-  height: 100%;
   text-align: center;
-  color: #0C5E6A;
+  color: white;
   background: rgba(26, 102, 116, 0.3);
-  text-align: center;
-  padding-bottom: 1.75rem;
+  padding: 1.5rem;
 }
 
 .text-white-75 {

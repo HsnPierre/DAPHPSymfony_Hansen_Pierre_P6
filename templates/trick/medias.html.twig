@@ -1,0 +1,77 @@
+{% extends 'layout.html.twig' %}
+
+{% block body_id 'trick_body' %}
+
+{% block body %}
+
+<section id="trick">
+
+    <div class="container" id="trick-box">
+        <div class="bg-white shadow rounded overflow-hidden">
+            <div id="background_picture">
+                <img class="img-fluid" id="bg-picture" src="{{ asset('assets/img/trick/post/' ~ trick.mainpic) }}" />
+                {% if is_granted('ROLE_USER') %}
+                <div class="user-button">
+                    <a href="/trick/{{ trick.name }}"><svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-arrow-left-circle" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M1 8a7 7 0 1 0 14 0A7 7 0 0 0 1 8zm15 0A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-4.5-.5a.5.5 0 0 1 0 1H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5H11.5z"/></svg></a>
+                </div>
+                {% endif %}
+                <div class="banner-title text-center">
+                    <h2 class="pb-0 mb-0">{{ trick.category }}</h2>
+                    <h4 class="pb-0 mb-0 bg-primary text-white">{{ trick.name }}</h4>
+                    <hr class="divider my-4" />
+                </div>
+            </div>
+            <div class="bg-light" id="media">
+
+                <h4 class="text-center pb-0 pt-2 mb-0">Medias</h2>
+                <hr class="divider pb-0 my-4" />
+
+                <div class="row row-cols-3">
+                {% if trick.medias != null %}
+
+                    {% for media in trick.medias %}
+
+                        {% if media.type == 'image' %}
+                        <div class="col-lg-4 col-sm-6" id="trick_thumbnails">
+                                <img class="img-thumbnails" src="{{ asset('assets/img/trick/post/medias/' ~ media.name) }}">
+                                {% if is_granted('ROLE_USER') %}
+                                    <div class="edit-button">
+                                        <form method="post" id="deleteimage">
+                                            <button for="deleteimage" type="submit" name="deletemedia" value="{{ media.name }}" class="btn btn-danger">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
+                                                    <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z"/>
+                                                    <path fill-rule="evenodd" d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4L4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z"/>
+                                                </svg>
+                                            </button>
+                                        </form>
+                                    </div>
+                                {% endif %}
+                            </div>
+                        {% elseif media.type == 'video' %}
+                            <div class="col-lg-4 col-sm-6" id="trick_thumbnails">
+                                <img class="img-thumbnails" src="https://img.youtube.com/vi/{{ media.name }}/mqdefault.jpg">
+                                {% if is_granted('ROLE_USER') %}
+                                    <div class="edit-button">
+                                        <form method="post" id="deletevideo">
+                                            <button for="deletevideo" type="submit" name="deletemedia" value="{{ media.name }}" class="btn btn-danger">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
+                                                    <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z"/>
+                                                    <path fill-rule="evenodd" d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4L4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z"/>
+                                                </svg>
+                                            </button>
+                                        </form>
+                                    </div>
+                                {% endif %}
+                            </div>
+                        {% endif %}
+
+                    {% endfor %}
+
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+</section>
+
+{% endblock %}

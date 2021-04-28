@@ -10,59 +10,37 @@
         <div class="bg-white shadow rounded overflow-hidden">
             <div id="background_picture">
                 <img class="img-fluid" id="bg-picture" src="{{ asset( 'assets/img/trick/post/' ~ trick.mainpic ) }}" />
-                {{ form_start(trickform, {'attr': {'novalidate': 'novalidate', 'class': 'container'}}) }}
+                {{ form_start(trickform, {'attr': {'novalidate': 'novalidate', 'class': 'container', 'id': 'trickform'}}) }}
                 <div class="banner-title-error text-center">
                     {{ form_row(trickform.mainpic) }}
                 </div>
             </div>
             <div class="container bg-light" id="media">
-                <div class="row row-cols-3">
-                    {% if trick.medias != null %}
+                {% if trick.medias is not empty %}
+
+                    <div class="text-center pt-2 pb-2">
+                        <a href="/trick/{{ trick.name }}/medias" class="btn btn-danger">Supprimer des médias</a>
+                    </div>
+
+                    <div class="row row-cols-3">
 
                         {% for media in trick.medias %}
 
                             {% if media.type == 'image' %}
-                            <div class="col-lg-4 col-sm-6" id="trick_thumbnails">
-                                    <img class="img-thumbnails" src="{{ asset('assets/img/trick/post/medias/' ~ media.name) }}">
-                                    {% if is_granted('ROLE_USER') %}
-                                        <div class="edit-button">
-                                            <form method="post">
-                                                <button type="submit" name="deletemedia" value="{{ media.name }}" class="btn btn-danger">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
-                                                        <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z"/>
-                                                        <path fill-rule="evenodd" d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4L4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z"/>
-                                                    </svg>
-                                                </button>
-                                            </form>
-                                        </div>
-                                    {% endif %}
+                                <div id="portfolio" class="col">
+                                    <a href="{{ asset('assets/img/original/' ~ media.name) }}"><img class="img-thumbnails w-100" src="{{ asset('assets/img/trick/post/medias/' ~ media.name) }}"></a>
                                 </div>
                             {% elseif media.type == 'video' %}
-                                <div class="col-lg-4 col-sm-6" id="trick_thumbnails">
-                                    <img class="img-thumbnails" src="https://img.youtube.com/vi/{{ media.name }}/mqdefault.jpg">
-                                    {% if is_granted('ROLE_USER') %}
-                                        <div class="edit-button">
-                                            <form method="post">
-                                                <button type="submit" name="deletemedia" value="{{ media.name }}" class="btn btn-danger">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
-                                                        <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z"/>
-                                                        <path fill-rule="evenodd" d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4L4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z"/>
-                                                    </svg>
-                                                </button>
-                                            </form>
-                                        </div>
-                                    {% endif %}
+                                <div class="col">
+                                    <a href="{{ media.url }}" target="_blank"><img class="img-thumbnails w-100" src="https://img.youtube.com/vi/{{ media.name }}/mqdefault.jpg"></a>
                                 </div>
                             {% endif %}
 
-                        {% endfor %}
-
-                    {% endif %}
-                </div>
+                        {% endfor %}                        
+                    </div>
+                {% endif %}
                 {{ form_row(trickform.medias, {'label': 'Images:'}) }}
                 {{ form_row(trickform.video, {'label': 'Vidéos:'}) }}
-                <div class="row row-cols-3">
-                </div>
             </div>
             <div class="container" id="main_infos">
                 {{ form_row(trickform.category, {'label': 'Catégorie'}) }}

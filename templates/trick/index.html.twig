@@ -34,30 +34,39 @@
                     <hr class="divider my-4" />
                 </div>
             </div>
-            <div class="bg-light" id="media">
-                
-                <div class="row row-cols-3">
-                
-                    {% if trick.medias != null %}
+            {% if trick.medias != null %}
+                <div class="bg-light" id="media">
+
+                    <h4 class="text-center pb-0 pt-2 mb-0">Medias</h2>
+                    <hr class="divider pb-0 my-4" />
+
+                    <div class="row row-cols-3">
 
                         {% for media in trick.medias %}
 
                             {% if media.type == 'image' %}
-                                <div class="col">
-                                    <a href="{{ asset('assets/img/original/' ~ media.name) }}"><img class="img-thumbnails" src="{{ asset('assets/img/trick/post/medias/' ~ media.name) }}"></a>
+                                <div id="portfolio" class="col">
+                                    <a href="{{ asset('assets/img/original/' ~ media.name) }}"><img class="img-thumbnails w-100" src="{{ asset('assets/img/trick/post/medias/' ~ media.name) }}"></a>
                                 </div>
                             {% elseif media.type == 'video' %}
-                                <div class="col">
-                                    <a href="{{ media.url }}"><img class="img-thumbnails" src="https://img.youtube.com/vi/{{ media.name }}/mqdefault.jpg"></a>
+                                <div class="col" id="medias_show">
+                                    <a href="{{ media.url }}" target="_blank"><img class="img-thumbnails w-100" src="https://img.youtube.com/vi/{{ media.name }}/mqdefault.jpg"></a>
+                                    <div class="video-icon">
+                                        <a href="{{ media.url }}" target="_blank">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="75" height="75" fill="red" class="bi bi-play-btn-fill" viewBox="0 0 16 16">
+                                                <path d="M0 12V4a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2zm6.79-6.907A.5.5 0 0 0 6 5.5v5a.5.5 0 0 0 .79.407l3.5-2.5a.5.5 0 0 0 0-.814l-3.5-2.5z"/>
+                                            </svg>
+                                        </a>
+                                    </div>
                                 </div>
                             {% endif %}
 
                         {% endfor %}                        
 
-                    {% endif %}
-
+                    </div>
                 </div>
-            </div>
+            {% endif %}
+
             <div class="container" id="main_infos">
                 <h3 class="text-center">{{ trick.name }}</h3>
                 <p class="text-center">{{ trick.content }}</p>
@@ -71,13 +80,13 @@
                     <h4 class="text-center pb-0 mb-0">Commentaires</h4>
                     <hr class="divider my-4" />
                     
-                    {% if erreur != null %}
-                        <div class="container text-center alert alert-danger">{{ erreur }}</div>
-                    {% endif %}
+                    {% for message in app.flashes('error') %}
+                        <div class="container text-center alert alert-success">{{ message }}</div>
+                    {% endfor %}
 
-                    {% if success != null %}
-                        <div class="container text-center alert alert-success">{{ success }}</div>
-                    {% endif %}
+                    {% for message in app.flashes('success') %}
+                        <div class="container text-center alert alert-success">{{ message }}</div>
+                    {% endfor %}
 
                     {% if is_granted('ROLE_USER') %}
                         {{ form_start(commentform, {'attr': {'novalidate': 'novalidate', 'class': 'container'}}) }}
