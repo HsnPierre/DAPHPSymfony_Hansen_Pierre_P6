@@ -37,15 +37,10 @@
                     <div class="profile mr-3">
                         
                         <div class="row" id="profile-pic2">
-                        <div class="">
-                            <img src="{{ user.profilePic }}" width="130" class="rounded mb-2 img-thumbnail">
-                            {% if is_granted('ROLE_SUPER_ADMIN') %}
-                                <form method="post">
-                                    <button name="delete" class="btn btn-danger btn-sm btn-block">Supprimer l'utilisateur</button>
-                                </form>
-                            {% endif %}
+                            <div class="col">
+                                <img src="{{ user.profilePic }}" width="130" class="rounded mb-2 img-thumbnail">
+                            </div>
                         </div>
-                    </div>
                     </div>
                     <div class="media-body mb-5 text-white" id="profile-pres">
                         <h4 class="mt-0 mb-0 text-white">{{ user.username }}</h4>
@@ -124,6 +119,19 @@
                                 </div>
                             </div>
                         </div>
+
+                        {% if is_granted('ROLE_SUPER_ADMIN') %}
+                        <div class="container text-center row row-cols-1">
+                            <form method="post">
+                                <input class="form-check-input col-2" type="checkbox" name="checkbox" id="flexCheckDefault" required>
+                                <label class="form-check-label col-10" for="flexCheckDefault">
+                                    Cochez cette case puis cliquez sur le bouton pour supprimer ce compte.
+                                </label>
+                                <button name="delete" class="btn btn-danger btn-sm col-2">Supprimer l'utilisateur</button>
+                            </form>
+                        </div>
+                        {% endif %}
+
                     </div>
                 </div>
             </div>

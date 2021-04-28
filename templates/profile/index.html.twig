@@ -158,8 +158,17 @@
                         </div>
                     </div>
                     <hr class="divider my-8" />
-                    <div class="text-center">
-                        <a href="" class="btn btn-danger btn-sm">Supprimer le compte</a>
+                    <div class="container text-center row row-cols-1">
+                        {% for message in app.flashes('error') %}
+                            <div class="container text-center alert alert-success">{{ message }}</div>
+                        {% endfor %}
+                        <form method="post">
+                            <input class="form-check-input col-1" type="checkbox" name="checkbox" id="flexCheckDefault" required>
+                            <label class="form-check-label col-10" for="flexCheckDefault">
+                                Cochez cette case puis cliquez sur le bouton pour supprimer votre compte.
+                            </label>
+                            <button name="delete" class="btn btn-danger btn-sm col-2">Supprimer le compte</button>
+                        </form>
                     </div>
                 </div>
             </div>

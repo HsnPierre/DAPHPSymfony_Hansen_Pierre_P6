@@ -35,8 +35,10 @@
                                             <div class="text-center">
                                             </div>
                                             <div class="checkbox row row-cols-2">
-                                                {{ form_row(profileform.public_name) }}
-                                                {{ form_row(profileform.public_surname) }}
+                                                {% set checked = (app.user.public[0] == 0)? false : true %}
+                                                {{ form_widget(profileform.public_name, {'attr': {'checked': checked}}) }}
+                                                {% set checked = (app.user.public[1] == 0)? false : true %}
+                                                {{ form_widget(profileform.public_surname, {'attr': {'checked': checked}}) }}
                                             </div>
                                             <div class="row row-cols-2">
                                                 {{ form_row(profileform.name, {'class': 'col', 'label': 'Nom'}) }}
@@ -44,9 +46,11 @@
                                             </div>
                                             <hr>
                                             <div class="row row-cols-1">
-                                                <div class="checkbox">{{ form_row(profileform.public_username) }}</div>
+                                                <div class="checkbox">{% set checked = (app.user.public[2] == 0)? false : true %}
+                                                {{ form_widget(profileform.public_username, {'attr': {'checked': checked}}) }}</div>
                                                 {{ form_row(profileform.username, {'class': 'col', 'label': 'Pseudonyme'}) }}
-                                                <div class="checkbox">{{ form_row(profileform.public_mail) }}</div>
+                                                <div class="checkbox">{% set checked = (app.user.public[3] == 0)? false : true %}
+                                                {{ form_widget(profileform.public_mail, {'attr': {'checked': checked}}) }}</div>
                                                 {{ form_row(profileform.mail, {'class': 'col', 'label': 'Adresse mail'}) }}                                                
                                             </div>
                                             

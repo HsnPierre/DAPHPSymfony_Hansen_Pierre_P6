@@ -99,14 +99,6 @@ use Symfony\Component\Security\Core\User\UserInterface;
      */
     private $public = [];
 
-    private $public_name;
-
-    private $public_surname;
-
-    private $public_username;
-
-    private $public_mail;
-
     public function __construct()
     {
         $this->date = new \DateTime();
