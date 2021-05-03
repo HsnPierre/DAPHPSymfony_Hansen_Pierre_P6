@@ -358,14 +358,24 @@ class TrickController extends AbstractController
                 $comment_repository = $this->getDoctrine()->getRepository(Comment::class);
                 $media_repository = $this->getDoctrine()->getRepository(Media::class);
 
-                $comments = $comment_repository->findBy(['author' => $trick->getId()]);
+                $user_comments = $comment_repository->findBy(['author' => $trick->getId()]);
+                $trick_comments = $comment_repository->findBy(['trick' => $trick->getId()]);
                 $medias = $media_repository->findBy(['trick' => $trick->getId()]);
 
                 $em = $this->getDoctrine()->getManager();
 
-                if($comments !== null){
+                if($user_comments !== null){
 
-                    foreach($comments as $comment){
+                    foreach($user_comments as $comment){
+                        $em->remove($comment);
+                        $em->flush();
+                    }
+        
+                }
+
+                if($trick_comments !== null){
+
+                    foreach($trick_comments as $comment){
                         $em->remove($comment);
                         $em->flush();
                     }

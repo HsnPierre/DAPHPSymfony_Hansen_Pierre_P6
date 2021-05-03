@@ -189,13 +189,14 @@ class ProfileController extends AbstractController
 
         $user = $user_repository->findOneBy(['username' => $username]);
 
-        $comments = $comment_repository->findBy(array('author'=>$user->getId()));
+        $user_comments = $comment_repository->findBy(array('author'=>$user->getId()));
         $tricks = $trick_repository->findBy(array('author'=>$user->getId()));
 
         $medias = [];
 
         foreach($tricks as $trick){
             $medias[] = $media_repository->findBy(array('trick'=>$trick->getId()));
+            $trick_comments[] = $comment_repository->findBy(array('trick'=>$trick->getId()));
         }
 
         $em = $this->getDoctrine()->getManager();
@@ -215,9 +216,20 @@ class ProfileController extends AbstractController
             
         }
 
-        if($comments !== null){
+        if($trick_comments[0] !== null){
 
-            foreach($comments as $comment){
+            foreach($trick_comments as $comment){
+                foreach($comment as $com){
+                    $em->remove($com);
+                    $em->flush();
+                }
+            }
+            
+        }
+
+        if($user_comments !== null){
+
+            foreach($user_comments as $comment){
                 $em->remove($comment);
                 $em->flush();
             }
@@ -250,13 +262,14 @@ class ProfileController extends AbstractController
 
         $user = $this->getUser();
 
-        $comments = $comment_repository->findBy(array('author'=>$user->getId()));
+        $user_comments = $comment_repository->findBy(array('author'=>$user->getId()));
         $tricks = $trick_repository->findBy(array('author'=>$user->getId()));
 
         $medias = [];
 
         foreach($tricks as $trick){
             $medias[] = $media_repository->findBy(array('trick'=>$trick->getId()));
+            $trick_comments[] = $comment_repository->findBy(array('trick'=>$trick->getId()));
         }
 
         $em = $this->getDoctrine()->getManager();
@@ -276,9 +289,20 @@ class ProfileController extends AbstractController
             
         }
 
-        if($comments !== null){
+        if($trick_comments[0] !== null){
 
-            foreach($comments as $comment){
+            foreach($trick_comments as $comment){
+                foreach($comment as $com){
+                    $em->remove($com);
+                    $em->flush();
+                }
+            }
+            
+        }
+
+        if($user_comments !== null){
+
+            foreach($user_comments as $comment){
                 $em->remove($comment);
                 $em->flush();
             }
