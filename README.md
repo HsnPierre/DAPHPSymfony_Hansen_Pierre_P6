@@ -2,13 +2,11 @@
 ### Instructions d'installation
 #### Etape 1 - **Créez votre dossier**
 
-Rendez vous dans votre dossier 'www' ou 'htdocs' selon votre serveur puis créez le dossier dans lequel vous souhaitez cloner le fichier (vous pouvez aussi directement cloner le fichier directement dans 'www' ou 'htdocs').  
+Choisissez le dossier dans lequel vous souhaitez cloner le dossier et initialisez-y Git à l'aide de GitBash en executant 'git init'.  
 
 #### Etape 2- **Clonez le projet**
 
 Pour se faire rendez vous sur l'onglet "<> Code" sur la page du projet GitHub et cliquez sur le bouton vert "Code". Copiez ensuite le lien HTTPS.  
-
-Rendez vous ensuite dans le dossier créé plus tôt avec GitBash - si ce n'est pas déjà fait initialisez Git dans ce dossier en executant 'git init' sur GitBash-  
 
 Puis clonez le projet avec la commande 'git clone URL'.  
 
