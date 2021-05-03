@@ -19,5 +19,3 @@ Ensuite saisissez la commande "doctrine:fixtures:load" afin de charger les data 
 A noter que le mot de passe pour les utilisateurs générés est "motdepasse". 
 
 [![Codacy Badge](https://app.codacy.com/project/badge/Grade/b5f5dde55f6345929763aeb820d3a63a)](https://www.codacy.com/gh/HsnPierre/DAPHPSymfony_Hansen_Pierre_P6/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=HsnPierre/DAPHPSymfony_Hansen_Pierre_P6&amp;utm_campaign=Badge_Grade)  
-
-
