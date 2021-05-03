@@ -43,7 +43,74 @@ class ProfileController extends AbstractController
         }
 
         if(null !== $request->request->get('delete') && $request->request->get('checkbox') !== false){
-            $this->deleteUser();
+            $trick_repository = $this->getDoctrine()->getRepository(Trick::class); 
+            $comment_repository = $this->getDoctrine()->getRepository(Comment::class);
+            $media_repository = $this->getDoctrine()->getRepository(Media::class);
+
+            $user = $this->getUser();
+
+            $user_comments = $comment_repository->findBy(array('author'=>$user->getId()));
+            $tricks = $trick_repository->findBy(array('author'=>$user->getId()));
+
+            $medias = [];
+
+            foreach($tricks as $trick){
+                $medias[] = $media_repository->findBy(array('trick'=>$trick->getId()));
+                $trick_comments[] = $comment_repository->findBy(array('trick'=>$trick->getId()));
+            }
+
+            $em = $this->getDoctrine()->getManager();
+
+            if($medias[0] !== null){
+
+                foreach($medias as $media){
+                    foreach($media as $med){
+                        if($med->getType() == 'image') {
+                            unlink('assets/img/trick/post/medias/'.$med->getName());
+                            unlink('assets/img/original/'.$med->getName());   
+                        }
+                        $em->remove($med);
+                        $em->flush();
+                    }
+                }
+                
+            }
+
+            if($trick_comments[0] !== null){
+
+                foreach($trick_comments as $comment){
+                    foreach($comment as $com){
+                        $em->remove($com);
+                        $em->flush();
+                    }
+                }
+                
+            }
+
+            if($user_comments !== null){
+
+                foreach($user_comments as $comment){
+                    $em->remove($comment);
+                    $em->flush();
+                }
+
+            }
+
+            if($tricks !== null){
+
+                foreach($tricks as $trick){
+                    unlink('assets/img/trick/post/'.$trick->getMainpic());
+                    unlink('assets/img/trick/thumbnails/'.$trick->getMainpic());
+                    $em->remove($trick);
+                    $em->flush();
+                }
+
+            }
+
+            $em->remove($user);
+            $em->flush();
+
+            return $this->redirectToRoute('security_logout');  
         } elseif(null !== $request->request->get('delete') && $request->request->get('checkbox') == false){
             $this->addFlash('error', 'Veuillez cocher la case pour supprimer votre compte.');
         }
@@ -165,7 +232,75 @@ class ProfileController extends AbstractController
             $tricks = $trick_repository->findBy(array('author'=>$user->getId()));
 
             if(null !== $request->request->get('delete') && $request->request->get('checkbox') !== false){
-                $this->deleteThisUser($username);
+                $user_repository = $this->getDoctrine()->getRepository(User::class);
+                $trick_repository = $this->getDoctrine()->getRepository(Trick::class); 
+                $comment_repository = $this->getDoctrine()->getRepository(Comment::class);
+                $media_repository = $this->getDoctrine()->getRepository(Media::class);
+
+                $user = $user_repository->findOneBy(['username' => $username]);
+
+                $user_comments = $comment_repository->findBy(array('author'=>$user->getId()));
+                $tricks = $trick_repository->findBy(array('author'=>$user->getId()));
+
+                $medias = [];
+
+                foreach($tricks as $trick){
+                    $medias[] = $media_repository->findBy(array('trick'=>$trick->getId()));
+                    $trick_comments[] = $comment_repository->findBy(array('trick'=>$trick->getId()));
+                }
+
+                $em = $this->getDoctrine()->getManager();
+
+                if($medias[0] !== null){
+
+                    foreach($medias as $media){
+                        foreach($media as $med){
+                            if($med->getType() == 'image') {
+                                unlink('assets/img/trick/post/medias/'.$med->getName());
+                                unlink('assets/img/original/'.$med->getName());   
+                            }
+                            $em->remove($med);
+                            $em->flush();
+                        }
+                    }
+                    
+                }
+
+                if($trick_comments[0] !== null){
+
+                    foreach($trick_comments as $comment){
+                        foreach($comment as $com){
+                            $em->remove($com);
+                            $em->flush();
+                        }
+                    }
+                    
+                }
+
+                if($user_comments !== null){
+
+                    foreach($user_comments as $comment){
+                        $em->remove($comment);
+                        $em->flush();
+                    }
+
+                }
+
+                if($tricks !== null){
+
+                    foreach($tricks as $trick){
+                        unlink('assets/img/trick/post/'.$trick->getMainpic());
+                        unlink('assets/img/trick/thumbnails/'.$trick->getMainpic());
+                        $em->remove($trick);
+                        $em->flush();
+                    }
+
+                }
+
+                $em->remove($user);
+                $em->flush();
+
+                return $this->redirectToRoute('home');
             } elseif(null !== $request->request->get('delete') && $request->request->get('checkbox') == false){
                 $this->addFlash('error', 'Veuillez cocher la case pour supprimer ce compte.');
             }
@@ -178,152 +313,5 @@ class ProfileController extends AbstractController
             );
 
         }
-    }
-
-    public function deleteThisUser(string $username)
-    {
-        $user_repository = $this->getDoctrine()->getRepository(User::class);
-        $trick_repository = $this->getDoctrine()->getRepository(Trick::class); 
-        $comment_repository = $this->getDoctrine()->getRepository(Comment::class);
-        $media_repository = $this->getDoctrine()->getRepository(Media::class);
-
-        $user = $user_repository->findOneBy(['username' => $username]);
-
-        $user_comments = $comment_repository->findBy(array('author'=>$user->getId()));
-        $tricks = $trick_repository->findBy(array('author'=>$user->getId()));
-
-        $medias = [];
-
-        foreach($tricks as $trick){
-            $medias[] = $media_repository->findBy(array('trick'=>$trick->getId()));
-            $trick_comments[] = $comment_repository->findBy(array('trick'=>$trick->getId()));
-        }
-
-        $em = $this->getDoctrine()->getManager();
-
-        if($medias[0] !== null){
-
-            foreach($medias as $media){
-                foreach($media as $med){
-                    if($med->getType() == 'image') {
-                        unlink('assets/img/trick/post/medias/'.$med->getName());
-                        unlink('assets/img/original/'.$med->getName());   
-                    }
-                    $em->remove($med);
-                    $em->flush();
-                }
-            }
-            
-        }
-
-        if($trick_comments[0] !== null){
-
-            foreach($trick_comments as $comment){
-                foreach($comment as $com){
-                    $em->remove($com);
-                    $em->flush();
-                }
-            }
-            
-        }
-
-        if($user_comments !== null){
-
-            foreach($user_comments as $comment){
-                $em->remove($comment);
-                $em->flush();
-            }
-
-        }
-
-        if($tricks !== null){
-
-            foreach($tricks as $trick){
-                unlink('assets/img/trick/post/'.$trick->getMainpic());
-                unlink('assets/img/trick/thumbnails/'.$trick->getMainpic());
-                $em->remove($trick);
-                $em->flush();
-            }
-
-        }
-
-        $em->remove($user);
-        $em->flush();
-
-        return $this->redirectToRoute('home');        
-        
-    }
-
-    public function deleteUser()
-    {
-        $trick_repository = $this->getDoctrine()->getRepository(Trick::class); 
-        $comment_repository = $this->getDoctrine()->getRepository(Comment::class);
-        $media_repository = $this->getDoctrine()->getRepository(Media::class);
-
-        $user = $this->getUser();
-
-        $user_comments = $comment_repository->findBy(array('author'=>$user->getId()));
-        $tricks = $trick_repository->findBy(array('author'=>$user->getId()));
-
-        $medias = [];
-
-        foreach($tricks as $trick){
-            $medias[] = $media_repository->findBy(array('trick'=>$trick->getId()));
-            $trick_comments[] = $comment_repository->findBy(array('trick'=>$trick->getId()));
-        }
-
-        $em = $this->getDoctrine()->getManager();
-
-        if($medias[0] !== null){
-
-            foreach($medias as $media){
-                foreach($media as $med){
-                    if($med->getType() == 'image') {
-                        unlink('assets/img/trick/post/medias/'.$med->getName());
-                        unlink('assets/img/original/'.$med->getName());   
-                    }
-                    $em->remove($med);
-                    $em->flush();
-                }
-            }
-            
-        }
-
-        if($trick_comments[0] !== null){
-
-            foreach($trick_comments as $comment){
-                foreach($comment as $com){
-                    $em->remove($com);
-                    $em->flush();
-                }
-            }
-            
-        }
-
-        if($user_comments !== null){
-
-            foreach($user_comments as $comment){
-                $em->remove($comment);
-                $em->flush();
-            }
-
-        }
-
-        if($tricks !== null){
-
-            foreach($tricks as $trick){
-                unlink('assets/img/trick/post/'.$trick->getMainpic());
-                unlink('assets/img/trick/thumbnails/'.$trick->getMainpic());
-                $em->remove($trick);
-                $em->flush();
-            }
-
-        }
-
-        $em->remove($user);
-        $em->flush();
-
-        return $this->redirectToRoute('security_logout');        
-        
     }
 }
