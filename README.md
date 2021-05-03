@@ -10,6 +10,10 @@ Pour se faire rendez vous sur l'onglet "<> Code" sur la page du projet GitHub et
 
 Puis clonez le projet avec la commande 'git clone URL'.  
 
+Réalisez dans le terminal la commande "composer install".  
+
+Paramétrez ensuite le fichier généré ".env" pour les informations de connexion à la base de données.
+
 #### Etape 3- **Intégrez la base de donnée**
 
 Depuis votre console saisissez "symfony console" (ou php bin/console) "doctrine:migrations:migrate".
