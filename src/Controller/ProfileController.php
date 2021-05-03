@@ -203,8 +203,10 @@ class ProfileController extends AbstractController
         if($medias[0] !== null){
 
             foreach($medias as $media){
-                unlink('assets/img/trick/post/medias/'.$media->getName());
-                unlink('assets/img/original/'.$media->getName());
+                if($media->getType() == 'image') {
+                    unlink('assets/img/trick/post/medias/'.$media->getName());
+                    unlink('assets/img/original/'.$media->getName());   
+                }
                 $em->remove($media);
                 $em->flush();
             }
