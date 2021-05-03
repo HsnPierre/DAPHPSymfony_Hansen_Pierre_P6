@@ -232,6 +232,8 @@ class TrickController extends AbstractController
             $trick->setEditor($user);
             $trick->setDateedit($date);
 
+            $em = $this->getDoctrine()->getManager();
+
             if(null !== $form->get('video')->getData()){
                 $delimiter = ";";
                 $videos = [];
@@ -325,7 +327,7 @@ class TrickController extends AbstractController
 
             }
 
-            $em = $this->getDoctrine()->getManager()->flush();
+            $em->flush();
 
             $this->addFlash('success', 'Le post a bien été mis à jour.');
 
@@ -350,7 +352,6 @@ class TrickController extends AbstractController
 
             $repository = $this->getDoctrine()->getRepository(Trick::class);
             $trick = $repository->findOneBy(['name' => $slug]);
-            $session = new Session();
 
             if(null !== $request->request->get('delete')) {
 

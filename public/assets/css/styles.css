@@ -10162,6 +10162,12 @@ header.masthead h1 {
   right: 90px;
 }
 
+#trick_thumbnails .delete-button {
+  position: absolute;
+  top: 10px;
+  right: 60px;
+}
+
 #medias_show .video-icon {
   position: absolute;
   top: 4rem;

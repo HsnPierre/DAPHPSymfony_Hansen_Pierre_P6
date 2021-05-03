@@ -45,8 +45,8 @@
                         {% for media in trick.medias %}
 
                             {% if media.type == 'image' %}
-                                <div id="portfolio" class="col">
-                                    <a href="{{ asset('assets/img/original/' ~ media.name) }}"><img class="img-thumbnails w-100" src="{{ asset('assets/img/trick/post/medias/' ~ media.name) }}"></a>
+                                <div class="col">
+                                    <a href="{{ asset('assets/img/original/' ~ media.name) }}" target="_blank"><img class="img-thumbnails w-100" src="{{ asset('assets/img/trick/post/medias/' ~ media.name) }}"></a>
                                 </div>
                             {% elseif media.type == 'video' %}
                                 <div class="col" id="medias_show">

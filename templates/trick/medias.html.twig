@@ -35,7 +35,7 @@
                         <div class="col-lg-4 col-sm-6" id="trick_thumbnails">
                                 <img class="img-thumbnails" src="{{ asset('assets/img/trick/post/medias/' ~ media.name) }}">
                                 {% if is_granted('ROLE_USER') %}
-                                    <div class="edit-button">
+                                    <div class="delete-button">
                                         <form method="post" id="deleteimage">
                                             <button for="deleteimage" type="submit" name="deletemedia" value="{{ media.name }}" class="btn btn-danger">
                                                 <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
@@ -51,7 +51,7 @@
                             <div class="col-lg-4 col-sm-6" id="trick_thumbnails">
                                 <img class="img-thumbnails" src="https://img.youtube.com/vi/{{ media.name }}/mqdefault.jpg">
                                 {% if is_granted('ROLE_USER') %}
-                                    <div class="edit-button">
+                                    <div class="delete-button">
                                         <form method="post" id="deletevideo">
                                             <button for="deletevideo" type="submit" name="deletemedia" value="{{ media.name }}" class="btn btn-danger">
                                                 <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">

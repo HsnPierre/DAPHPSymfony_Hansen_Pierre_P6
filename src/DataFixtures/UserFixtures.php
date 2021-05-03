@@ -18,27 +18,25 @@ class UserFixtures extends Fixture
         $public_username = ['0', 'username'];
         $public_mail = ['0', 'mail'];
         $roles = ["ROLE_SUPER_ADMIN", "ROLE_USER"];
-        $start = new DateTime();
-        $end = new DateTime();
 
         for($i = 0; $i < 5; $i++){
             $user = new User();
 
-            $prenom = array_rand($surname, 1);
-            $nom = array_rand($name, 1);
+            $public = [];
+            $role = [];
+
+            $prenom = $surname[array_rand($surname, 1)];
+            $nom = $name[array_rand($name, 1)];
             $username = $prenom.substr($nom,0,3);
             $mail = strtolower($prenom).'.'.strtolower($nom).'@gmail.com';
-            $pp = array_rand($profilepic);
-            $tmp_password = md5($mail);
+            $pp = $profilepic[array_rand($profilepic)];
+            $tmp_password = 'motdepasse';
             $password = password_hash($tmp_password, PASSWORD_BCRYPT);
-            $public[] = array_rand($public_name);
-            $public[] = array_rand($public_surname);
-            $public[] = array_rand($public_username);
-            $public[] = array_rand($public_mail);
-            $randomTimestamp = mt_rand($start->getTimestamp(), $end->getTimestamp());
-            $randomDate = new DateTime();
-            $randomDate->setTimeStamp($randomTimestamp);
-            $role[] = array_rand($roles, 1);
+            $public[] = $public_name[array_rand($public_name)];
+            $public[] = $public_surname[array_rand($public_surname)];
+            $public[] = $public_username[array_rand($public_username)];
+            $public[] = $public_mail[array_rand($public_mail)];
+            $role[] = $roles[array_rand($roles, 1)];
 
             $user_reference = 'user-'.$i;
 
@@ -49,7 +47,6 @@ class UserFixtures extends Fixture
             $user->setPassword($password);
             $user->setProfilepic($pp);
             $user->setRgpd(1);
-            $user->setDate($randomDate);
             $user->setRoles($role);
             $user->setPublic($public);
 
