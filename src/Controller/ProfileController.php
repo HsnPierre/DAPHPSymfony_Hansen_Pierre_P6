@@ -203,12 +203,14 @@ class ProfileController extends AbstractController
         if($medias[0] !== null){
 
             foreach($medias as $media){
-                if($media->getType() == 'image') {
-                    unlink('assets/img/trick/post/medias/'.$media->getName());
-                    unlink('assets/img/original/'.$media->getName());   
+                foreach($media as $med){
+                    if($med->getType() == 'image') {
+                        unlink('assets/img/trick/post/medias/'.$med->getName());
+                        unlink('assets/img/original/'.$med->getName());   
+                    }
+                    $em->remove($med);
+                    $em->flush();
                 }
-                $em->remove($media);
-                $em->flush();
             }
             
         }
@@ -262,10 +264,14 @@ class ProfileController extends AbstractController
         if($medias[0] !== null){
 
             foreach($medias as $media){
-                unlink('assets/img/trick/post/medias/'.$media->getName());
-                unlink('assets/img/original/'.$media->getName());
-                $em->remove($media);
-                $em->flush();
+                foreach($media as $med){
+                    if($med->getType() == 'image') {
+                        unlink('assets/img/trick/post/medias/'.$med->getName());
+                        unlink('assets/img/original/'.$med->getName());   
+                    }
+                    $em->remove($med);
+                    $em->flush();
+                }
             }
             
         }
