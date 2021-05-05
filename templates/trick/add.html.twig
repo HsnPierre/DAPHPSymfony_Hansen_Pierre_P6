@@ -1,0 +1,38 @@
+{% extends 'layout.html.twig' %}
+
+{% block body_id 'trick_body' %}
+
+{% block body %}
+
+<section id="trick">
+  
+    <div class="container" id="trick-box">
+        <div class="bg-white shadow rounded overflow-hidden">
+            <div id="background_picture">
+                <img class="img-fluid" id="bg-picture" src="https://nsa40.casimages.com/img/2021/03/25/210325043527554895.png" />
+                {{ form_start(trickform, {'attr': {'novalidate': 'novalidate', 'class': 'container'}}) }}
+                <div class="banner-title-error text-center">
+                    {{ form_row(trickform.mainpic) }}
+                </div>
+            </div>
+            <div class="container bg-light" id="media">
+                {{ form_row(trickform.medias, {'label': 'Images:'}) }}
+                {{ form_row(trickform.video, {'label': 'Vidéos:'}) }}
+                <div class="row row-cols-3">
+                </div>
+            </div>
+            <div class="container" id="main_infos">
+                {{ form_row(trickform.category, {'label': 'Catégorie'}) }}
+                {{ form_row(trickform.name, {'label': 'Nom'}) }}
+                {{ form_row(trickform.content, {'label': 'Description'}) }}  
+                <div class="pb-4 text-center">
+                    <button type="submit" class="btn btn-primary btn-sm">Confirmer</a>
+                </div>
+            {{ form_end(trickform) }}
+            </div>
+        </div>
+    </div>
+
+</section>
+
+{% endblock %}

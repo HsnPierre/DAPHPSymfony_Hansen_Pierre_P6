@@ -1,19 +1,180 @@
-<!DOCTYPE html>
-<html>
-    <head>
-        <meta charset="UTF-8">
-        <title>{% block title %}Profile!{% endblock %}</title>
-        {# Run `composer require symfony/webpack-encore-bundle`
-           and uncomment the following Encore helpers to start using Symfony UX #}
-        {% block stylesheets %}
-            {#{{ encore_entry_link_tags('app') }}#}
-        {% endblock %}
+{% extends 'layout.html.twig' %}
 
-        {% block javascripts %}
-            {#{{ encore_entry_script_tags('app') }}#}
-        {% endblock %}
-    </head>
-    <body>
-        {% block body %}{% endblock %}
-    </body>
-</html>
+{% block title %}Profil{% endblock %}
+
+{% block body_id 'profile_body' %}
+
+{% block body %}
+
+<section id="profile">
+
+    <div class="container" id="profile-box">
+        <div class="bg-white shadow rounded overflow-hidden">
+            <div class="px-4 pt-0 pb-4 bg-dark" id="banner">
+                <div class="media align-items-end profile-header">
+                    <div class="profile mr-3">
+                        
+                        <div class="row" id="profile-pic">
+                        <div class="">
+                            <a href="#imageCollapse" data-toggle="collapse" aria-expanded="false" aria-controls="imageCollapse" class="mainPic">
+                                <img src="{{ app.user.profilePic }}" width="130" class="rounded mb-2 img-thumbnail">
+                            </a>
+                        </div>
+                        <div class="collapse row row-cols-auto no-gutters" id="imageCollapse">
+                            {% if (app.user.profilePic != "https://nsa40.casimages.com/img/2021/03/19/mini_210319072829662565.png") %}
+                            <form action="{{ path('profile') }}" method="post" class="col">
+                                <input type="text" id="pic" name="pic" class="form-control" value="https://nsa40.casimages.com/img/2021/03/19/mini_210319072829662565.png" hidden/>
+                                <input type="image" name="pic" src="https://nsa40.casimages.com/img/2021/03/19/mini_210319072829662565.png" width="70" class="rounded mb-2 img-thumbnail">        
+                            </form>
+                            {% endif %}
+                            {% if (app.user.profilePic != "https://nsa40.casimages.com/img/2021/03/19/mini_210319072829751821.png") %}
+                            <form action="{{ path('profile') }}" method="post" class="col">
+                                <input type="text" id="pic" name="pic" class="form-control" value="https://nsa40.casimages.com/img/2021/03/19/mini_210319072829751821.png" hidden/>
+                                <input type="image" name="pic" src="https://nsa40.casimages.com/img/2021/03/19/mini_210319072829751821.png" width="70" class="rounded mb-2 img-thumbnail">
+                            </form>
+                            {% endif %}
+                            {% if (app.user.profilePic != "https://nsa40.casimages.com/img/2021/03/19/mini_21031907283016778.png") %}
+                            <form action="{{ path('profile') }}" method="post" class="col">
+                                <input type="text" id="pic" name="pic" class="form-control" value="https://nsa40.casimages.com/img/2021/03/19/mini_21031907283016778.png" hidden/>
+                                <input type="image" name="pic" src="https://nsa40.casimages.com/img/2021/03/19/mini_21031907283016778.png" width="70" class="rounded mb-2 img-thumbnail">
+                            </form>
+                            {% endif %}
+                            {% if (app.user.profilePic != "https://nsa40.casimages.com/img/2021/03/19/mini_210319072830281957.png") %}
+                            <form action="{{ path('profile') }}" method="post" class="col">
+                                <input type="text" id="pic" name="pic" class="form-control" value="https://nsa40.casimages.com/img/2021/03/19/mini_210319072830281957.png" hidden/>
+                                <input type="image" name="pic" src="https://nsa40.casimages.com/img/2021/03/19/mini_210319072830281957.png" width="70" class="rounded mb-2 img-thumbnail">
+                            </form>
+                            {% endif %}
+                            {% if (app.user.profilePic != "https://nsa40.casimages.com/img/2021/03/19/mini_210319072830540842.png") %}
+                            <form action="{{ path('profile') }}" method="post" class="col">
+                                <input type="text" id="pic" name="pic" class="form-control" value="https://nsa40.casimages.com/img/2021/03/19/mini_210319072830540842.png" hidden/>
+                                <input type="image" name="pic" src="https://nsa40.casimages.com/img/2021/03/19/mini_210319072830540842.png" width="70" class="rounded mb-2 img-thumbnail">
+                            </form>
+                            {% endif %}
+                            {% if (app.user.profilePic != "https://nsa40.casimages.com/img/2021/03/19/mini_210319072830813153.png") %}
+                            <form action="{{ path('profile') }}" method="post" class="col">
+                                <input type="text" id="pic" name="pic" class="form-control" value="https://nsa40.casimages.com/img/2021/03/19/mini_210319072830813153.png" hidden/>
+                                <input type="image" name="pic" src="https://nsa40.casimages.com/img/2021/03/19/mini_210319072830813153.png" width="70" class="rounded mb-2 img-thumbnail">
+                            </form>
+                            {% endif %}
+                            {% if (app.user.profilePic != "https://nsa40.casimages.com/img/2021/03/19/mini_210319072831107206.png") %}
+                            <form action="{{ path('profile') }}" method="post" class="col">
+                                <input type="text" id="pic" name="pic" class="form-control" value="https://nsa40.casimages.com/img/2021/03/19/mini_210319072831107206.png" hidden/>
+                                <input type="image" name="pic" src="https://nsa40.casimages.com/img/2021/03/19/mini_210319072831107206.png" width="70" class="rounded mb-2 img-thumbnail">
+                            </form>
+                            {% endif %}
+                            {% if (app.user.profilePic != "https://nsa40.casimages.com/img/2021/03/19/mini_210319072831377550.png") %}
+                            <form action="{{ path('profile') }}" method="post" class="col">
+                                <input type="text" id="pic" name="pic" class="form-control" value="https://nsa40.casimages.com/img/2021/03/19/mini_210319072831377550.png" hidden/>
+                                <input type="image" name="pic" src="https://nsa40.casimages.com/img/2021/03/19/mini_210319072831377550.png" width="70" class="rounded mb-2 img-thumbnail">
+                            </form>
+                            {% endif %}
+                            {% if (app.user.profilePic != "https://nsa40.casimages.com/img/2021/03/19/mini_210319072831648754.png") %}
+                            <form action="{{ path('profile') }}" method="post" class="col">
+                                <input type="text" id="pic" name="pic" class="form-control" value="https://nsa40.casimages.com/img/2021/03/19/mini_210319072831648754.png" hidden/>
+                                <input type="image" name="pic" src="https://nsa40.casimages.com/img/2021/03/19/mini_210319072831648754.png" width="70" class="rounded mb-2 img-thumbnail">
+                            </form>
+                            {% endif %}
+                            {% if (app.user.profilePic != "https://nsa40.casimages.com/img/2021/03/19/mini_210319072831918051.png") %}
+                            <form action="{{ path('profile') }}" method="post" class="col">
+                                <input type="text" id="pic" name="pic" class="form-control" value="https://nsa40.casimages.com/img/2021/03/19/mini_210319072831918051.png" hidden/>
+                                <input type="image" name="pic" src="https://nsa40.casimages.com/img/2021/03/19/mini_210319072831918051.png" width="70" class="rounded mb-2 img-thumbnail">
+                            </form>
+                            {% endif %}
+                        </div>
+                    </div>
+                    </div>
+                    <div class="media-body mb-5 text-white" id="profile-pres">
+                        <h4 class="mt-0 mb-0 text-white">{{ app.user.username }}</h4>
+                        <p></p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-light p-4 d-flex justify-content-center">
+                <div class="container">
+                    <h3 class="text-center">Profil</h3>
+                    <hr class="divider my-8" />
+                    <div class="row">
+                        <div class="col-sm-5" id="profile_infos">
+                            <div class="card border-secondary mb-3">
+                                <div class="card-body">
+                                    <h4 class="card-header text-center"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#0c5460" class="bi bi-caret-down-square-fill" viewBox="0 0 16 16"><path d="M0 2a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V2zm4 4a.5.5 0 0 0-.374.832l4 4.5a.5.5 0 0 0 .748 0l4-4.5A.5.5 0 0 0 12 6H4z"/></svg> Mes informations</h4>
+                                    <p class="card-text">
+                                        <div class="row row-cols-2">
+                                            <div class="col">
+                                                <label>Nom</label>
+                                                <input class="form-control" type="text" placeholder="{{ app.user.name }}" disabled>
+                                            </div>
+                                            <div class="col">
+                                                <label>Prenom</label>
+                                                <input class="form-control" type="text" placeholder="{{ app.user.surname }}" disabled>
+                                            </div>
+                                        </div>
+                                        <div class="row row-cols-1">
+                                            <div class="col">
+                                                <label>Pseudo</label>
+                                                <input class="form-control" type="text" placeholder="{{ app.user.username }}" disabled>
+                                                <label>Mail</label> 
+                                                <input class="form-control" type="text" placeholder="{{ app.user.mail }}" disabled>                                         
+                                            </div>
+                                        </div>
+                                    </p>
+                                    <div class="text-center">
+                                        <a href="profile/edit" class="btn btn-primary btn-sm">Modifier</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-7" id="profile_post">
+                            <div class="card border-secondary mb-3">
+                                <div class="card-body">
+                                    <div id="portfolio"><h4 class="card-header text-center"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#0c5460" class="bi bi-caret-down-square-fill" viewBox="0 0 16 16"><path d="M0 2a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V2zm4 4a.5.5 0 0 0-.374.832l4 4.5a.5.5 0 0 0 .748 0l4-4.5A.5.5 0 0 0 12 6H4z"/></svg> Mes posts</h4></div>
+                                    <br>
+                                    <div id="portfolio">
+                                        <div class="container-fluid p-0">
+                                            <div class="row no-gutters">
+                                                
+                                                {% for trick in tricks %}
+         
+                                                    <div class="col-lg-4 col-sm-6" id="trick_thumbnails">
+                                                        <a class="portfolio-box" href="/trick/{{ trick.name }}">
+                                                            <img class="img-fluid" src="{{ asset('assets/img/trick/thumbnails/' ~ trick.mainpic) }}" alt="" />
+                                                            <div class="portfolio-box-caption">
+                                                                <div class="project-category text-white-50">{{ trick.category }}</div>
+                                                                <div class="project-name">{{ trick.name }}</div>
+                                                            </div>
+                                                        </a>
+                                                    </div>
+
+                                                {% endfor %}
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <hr class="divider my-8" />
+                    <div class="container text-center row row-cols-1">
+                        {% for message in app.flashes('error') %}
+                            <div class="container text-center alert alert-success">{{ message }}</div>
+                        {% endfor %}
+                        <form method="post">
+                            <input class="form-check-input col-1" type="checkbox" name="checkbox" id="flexCheckDefault" required>
+                            <label class="form-check-label col-10" for="flexCheckDefault">
+                                Cochez cette case puis cliquez sur le bouton pour supprimer votre compte.
+                            </label>
+                            <button name="delete" class="btn btn-danger btn-sm col-2">Supprimer le compte</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</section>
+
+{% endblock %}

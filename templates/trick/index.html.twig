@@ -1,19 +1,152 @@
-<!DOCTYPE html>
-<html>
-    <head>
-        <meta charset="UTF-8">
-        <title>{% block title %}Trick!{% endblock %}</title>
-        {# Run `composer require symfony/webpack-encore-bundle`
-           and uncomment the following Encore helpers to start using Symfony UX #}
-        {% block stylesheets %}
-            {#{{ encore_entry_link_tags('app') }}#}
-        {% endblock %}
+{% extends 'layout.html.twig' %}
 
-        {% block javascripts %}
-            {#{{ encore_entry_script_tags('app') }}#}
-        {% endblock %}
-    </head>
-    <body>
-        {% block body %}{% endblock %}
-    </body>
-</html>
+{% block body_id 'trick_body' %}
+
+{% block body %}
+
+<section id="trick">
+
+    <div class="container" id="trick-box">
+        <div class="bg-white shadow rounded overflow-hidden">
+            <div id="background_picture">
+                <img class="img-fluid" id="bg-picture" src="{{ asset('assets/img/trick/post/' ~ trick.mainpic) }}" />
+                {% if is_granted('ROLE_USER') %}
+                <div class="user-button">
+                    
+                    <a href="/trick/{{ trick.name }}/edit" class="btn btn-primary">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-pencil" viewBox="0 0 16 16">
+                            <path d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168l10-10zM11.207 2.5L13.5 4.793 14.793 3.5 12.5 1.207 11.207 2.5zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293l6.5-6.5zm-9.761 5.175l-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325z"/>
+                        </svg>
+                    </a>
+
+                    <a href="/trick/{{ trick.name }}/delete" class="btn btn-danger">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
+                            <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z"/>
+                            <path fill-rule="evenodd" d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4L4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z"/>
+                        </svg>
+                    </a>
+
+                </div>
+                {% endif %}
+                <div class="banner-title text-center">
+                    <h2 class="pb-0 mb-0">{{ trick.category }}</h2>
+                    <h4 class="pb-0 mb-0 bg-primary text-white">{{ trick.name }}</h4>
+                    <hr class="divider my-4" />
+                </div>
+            </div>
+            {% if trick.medias != null %}
+                <div class="bg-light" id="media">
+
+                    <h4 class="text-center pb-0 pt-2 mb-0">Medias</h2>
+                    <hr class="divider pb-0 my-4" />
+
+                    <div class="row row-cols-3">
+
+                        {% for media in trick.medias %}
+
+                            {% if media.type == 'image' %}
+                                <div class="col">
+                                    <a href="{{ asset('assets/img/original/' ~ media.name) }}" target="_blank"><img class="img-thumbnails w-100" src="{{ asset('assets/img/trick/post/medias/' ~ media.name) }}"></a>
+                                </div>
+                            {% elseif media.type == 'video' %}
+                                <div class="col" id="medias_show">
+                                    <a href="{{ media.url }}" target="_blank"><img class="img-thumbnails w-100" src="https://img.youtube.com/vi/{{ media.name }}/mqdefault.jpg"></a>
+                                    <div class="video-icon">
+                                        <a href="{{ media.url }}" target="_blank">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="75" height="75" fill="red" class="bi bi-play-btn-fill" viewBox="0 0 16 16">
+                                                <path d="M0 12V4a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2zm6.79-6.907A.5.5 0 0 0 6 5.5v5a.5.5 0 0 0 .79.407l3.5-2.5a.5.5 0 0 0 0-.814l-3.5-2.5z"/>
+                                            </svg>
+                                        </a>
+                                    </div>
+                                </div>
+                            {% endif %}
+
+                        {% endfor %}                        
+
+                    </div>
+                </div>
+            {% endif %}
+
+            <div class="container" id="main_infos">
+                <h3 class="text-center">{{ trick.name }}</h3>
+                <p class="text-center">{{ trick.content }}</p>
+            </div>
+            <div class="" id="secondary_infos">
+                <p class="text-center">Ecrit par <a href="/profile/{{ trick.author.username }}">{{ trick.author.username }}</a> le {{ trick.date | date }} {% if trick.editor %} Edité par <a href="/profile/{{ trick.editor.username }}">{{ trick.editor.username }}</a> le {{ trick.dateedit | date }} {% endif %}</p>
+            </div>
+            <hr>
+            <div class="" id="comments">
+                <div class="container" id="add_comments">
+                    <h4 class="text-center pb-0 mb-0">Commentaires</h4>
+                    <hr class="divider my-4" />
+                    
+                    {% for message in app.flashes('error') %}
+                        <div class="container text-center alert alert-success">{{ message }}</div>
+                    {% endfor %}
+
+                    {% for message in app.flashes('success') %}
+                        <div class="container text-center alert alert-success">{{ message }}</div>
+                    {% endfor %}
+
+                    {% if is_granted('ROLE_USER') %}
+                        {{ form_start(commentform, {'attr': {'novalidate': 'novalidate', 'class': 'container'}}) }}
+
+                            <div class="container row row-cols-2 no-gutters">
+                                <div class="col-1">
+                                    <img src="{{ app.user.profilepic }}" class="rounded mb-4 img-thumbnail" id="comment_profile_pic">
+                                </div>
+                                <div class="col-11">
+                                    {{ form_row(commentform.content) }}
+                                    {{ form_row(commentform.rgpd) }}
+                                </div>
+                            </div>
+                            <div class="text-center">
+                                <button type="submit" class="btn btn-primary btn-sm">Envoyer</a>
+                            </div>
+
+                        {{ form_end(commentform) }}
+                    {% else %}
+                        <p class="text-center"><a href="/register">Inscrivez vous</a> ou <a href="/login">connectez vous</a> pour pouvoir commenter</p>
+                    {% endif %}
+                </div>
+                <hr>
+                <div class="container bg-light" id="show_comments">
+                    {% if trick.comments != null %}
+
+                        {% for comment in trick.comments %}
+
+                            <div class="container row row-cols-2 no-gutters" id="one_comment">
+                                <div class="col-auto" id="div_comment_pp">
+                                    <a href="/profile/{{ comment.author.username }}"><img src="{{ comment.author.profilepic }}" class="rounded mb-4 img-thumbnail" id="comment_profile_pic"></a>
+                                </div>
+                                <div class="col-11">
+                                    <div class="row row-cols-1 no-gutters" id="comment_infos">
+                                        <h4 class="col-auto" id="comment_username"><a href="/profile/{{ comment.author.username }}">{{ comment.author.username }}</a></h4>
+                                        <p class="col-auto" id="comment_date">Posté le {{ comment.date | date }}</p>
+                                        {% if is_granted('ROLE_SUPER_ADMIN') %}
+                                        <form class="col-auto pl-5" method="post">
+                                            <button type="submit" name="deletecomment" value="{{ comment.id }}" class="btn btn-danger">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
+                                                    <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z"/>
+                                                    <path fill-rule="evenodd" d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4L4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z"/>
+                                                </svg>
+                                            </button>
+                                        </form>
+                                        {% endif %}
+                                        <div class="container row row-cols no-gutters" id="comment_content">
+                                            <p class="pb-0 col-9">{{ comment.content }}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        {% endfor %}
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+</section>
+
+{% endblock %}

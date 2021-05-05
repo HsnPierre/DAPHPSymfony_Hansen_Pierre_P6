@@ -1,0 +1,98 @@
+{% extends 'layout.html.twig' %}
+
+{% block body_id 'trick_body' %}
+
+{% block body %}
+
+<section id="trick">
+
+    <div class="container" id="trick-box">
+        <div class="bg-white shadow rounded overflow-hidden">
+            <div id="background_picture">
+                <img class="img-fluid" id="bg-picture" src="{{ asset('assets/img/trick/post/' ~ trick.mainpic) }}" />
+                <div class="banner-title text-center">
+                    <h2 class="pb-0 mb-0">{{ trick.category }}</h2>
+                    <h4 class="pb-0 mb-0 bg-primary text-white">{{ trick.name }}</h4>
+                    <hr class="divider my-4" />
+                </div>
+            </div>
+            <div class="bg-light" id="media">
+                
+                <div class="row row-cols-3">
+                
+                    {% if trick.medias != null %}
+
+                        {% for media in trick.medias %}
+
+                            <div class="col">
+                                <a href="{{ asset('assets/img/original/' ~ media.name) }}"><img class="img-thumbnails" src="{{ asset('assets/img/trick/post/medias/' ~ media.name) }}"></a>
+                            </div>
+
+                        {% endfor %}
+
+                    {% endif %}
+
+                </div>
+            </div>
+            <div class="container" id="main_infos">
+                <h3 class="text-center">{{ trick.name }}</h3>
+                <p class="text-center">{{ trick.content }}</p>
+            </div>
+            <div class="" id="secondary_infos">
+                <p class="text-center">Ecrit par <a href="/profile/{{ trick.author.username }}">{{ trick.author.username }}</a> le {{ trick.date | date }} {% if trick.editor %} Edité par <a href="/profile/{{ trick.editor.username }}">{{ trick.editor.username }}</a> le {{ trick.dateedit | date }} {% endif %}</p>
+            </div>
+            <hr>
+            <div class="" id="comments">
+
+                <h4 class="text-center pb-0 mb-0">Commentaires</h4>
+                <hr class="divider my-4" />
+
+                <div class="container bg-light" id="show_comments">
+                    {% if trick.comments != null %}
+
+                        {% for comment in trick.comments %}
+
+                            <div class="container row row-cols-2 no-gutters" id="one_comment">
+                                <div class="col-auto" id="div_comment_pp">
+                                    <a href="/profile/{{ comment.author.username }}"><img src="{{ comment.author.profilepic }}" class="rounded mb-4 img-thumbnail" id="comment_profile_pic"></a>
+                                </div>
+                                <div class="col-11">
+                                    <div class="row row-cols-1 no-gutters" id="comment_infos">
+                                        <h4 class="col-auto" id="comment_username"><a href="/profile/{{ comment.author.username }}">{{ comment.author.username }}</a></h4>
+                                        <p class="col-auto" id="comment_date">Posté le {{ comment.date | date }}</p>
+                                        <div class="container row row-cols no-gutters" id="comment_content">
+                                            <p class="pb-0 col-9">{{ comment.content }}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        {% endfor %}
+                    {% endif %}
+                </div>
+            </div>
+
+            <div id="delete-form" class="container">
+                
+                <h4 class="text-center">Supprimer le post ?</h4>
+                <p>
+                    Vous êtes sur le point de supprimer ce post, cela entrainera la suppression de tous les commentaires postés sous celui ci, cliquez sur confirmer pour terminer l'action.
+                </p>
+
+                <form method='post' id="delete">
+                    <div class="d-flex justify-content-end">
+                        <button class="btn btn-danger" type="submit" name="delete">Confirmer</button>
+                    <div>
+                </form>
+
+                <div class="d-flex justify-content-end">
+                    <a href="/trick/{{ trick.name }}" class="btn btn-secondary">Annuler</a>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+</section>
+
+{% endblock %}

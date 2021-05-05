@@ -1,0 +1,33 @@
+{% extends 'layout.html.twig' %}
+
+{% block title %}Inscription{% endblock %}
+
+{% block body_id 'register_body' %}
+
+{% block body %}
+
+    <section id="register">
+            <h2 class="text-center mt-0">Inscription</h2>
+            <hr class="divider my-4" />
+            {% if erreur != null and registerform.name != null %}
+                <div class="container text-center alert alert-danger">{{ erreur }}</div>
+            {% endif %}
+            {{ form_start(registerform, {'attr': {'novalidate': 'novalidate', 'class': 'container'}}) }}
+                <div class="row row-cols-2">
+                    {{ form_row(registerform.name, {'class': 'col', 'label': 'Nom'}) }}
+                    {{ form_row(registerform.surname, {'class': 'col', 'label': 'Prénom'}) }}
+                </div>
+                <div class="row row-cols-1">
+                    {{ form_row(registerform.username, {'class': 'col', 'label': 'Pseudonyme'}) }}
+                    {{ form_row(registerform.mail, {'class': 'col', 'label': 'Adresse mail'}) }}
+                    {{ form_row(registerform.plainPassword, {'class': 'col', 'label': 'Mot de passe'}) }}
+                    <p>{{ form_row(registerform.rgpd, {'class': 'col'}) }}</p>
+                    
+                </div>
+                
+                <div class="text-center">
+                    <button type="submit" class="btn btn-primary">S'inscrire</button>
+                </div>
+            {{ form_end(registerform) }}
+    </section>
+{% endblock %}

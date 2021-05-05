@@ -4,30 +4,35 @@ namespace App\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Session\Session;
+use App\Entity\Trick;
+use App\Entity\User;
 
 class MainController extends AbstractController
 {
     /**
      * Page d'accueil
      * 
-     * @Route("/", name="accueil")
+     * @Route("/", name="home")
      */
     public function index()
     {
-        return $this->render('main/index.html.twig');
-    }
+        $repository = $this->getDoctrine()->getRepository(Trick::class);
+        $tricks = $repository->findBy(array(), array('category'=>'ASC'));
 
-    /**
-     * Page d'accès à un trick
-     * 
-     * @Route(
-     * "/trick/{trickId<\d+>}",
-     * name="trick",
-     * methods={"GET"}
-     * )
-     */
-    public function showTrick($trickId)
-    {
+        $session = new Session();
+        $session->start();
 
+        $success = null;
+        if(null !== $session->get('success')){
+            $success = $session->remove('success');
+        }
+
+        return $this->render('main/index.html.twig', [
+            'tricks' => $tricks,
+            'success' => $success,
+            ]
+        );
     }
 }

@@ -1,0 +1,59 @@
+{% extends 'layout.html.twig' %}
+
+{% block body_id 'trick_body' %}
+
+{% block body %}
+
+<section id="trick">
+  
+    <div class="container" id="trick-box">
+        <div class="bg-white shadow rounded overflow-hidden">
+            <div id="background_picture">
+                <img class="img-fluid" id="bg-picture" src="{{ asset( 'assets/img/trick/post/' ~ trick.mainpic ) }}" />
+                {{ form_start(trickform, {'attr': {'novalidate': 'novalidate', 'class': 'container', 'id': 'trickform'}}) }}
+                <div class="banner-title-error text-center">
+                    {{ form_row(trickform.mainpic) }}
+                </div>
+            </div>
+            <div class="container bg-light" id="media">
+                {% if trick.medias is not empty %}
+
+                    <div class="text-center pt-2 pb-2">
+                        <a href="/trick/{{ trick.name }}/medias" class="btn btn-danger">Supprimer des médias</a>
+                    </div>
+
+                    <div class="row row-cols-3">
+
+                        {% for media in trick.medias %}
+
+                            {% if media.type == 'image' %}
+                                <div id="portfolio" class="col">
+                                    <a href="{{ asset('assets/img/original/' ~ media.name) }}"><img class="img-thumbnails w-100" src="{{ asset('assets/img/trick/post/medias/' ~ media.name) }}"></a>
+                                </div>
+                            {% elseif media.type == 'video' %}
+                                <div class="col">
+                                    <a href="{{ media.url }}" target="_blank"><img class="img-thumbnails w-100" src="https://img.youtube.com/vi/{{ media.name }}/mqdefault.jpg"></a>
+                                </div>
+                            {% endif %}
+
+                        {% endfor %}                        
+                    </div>
+                {% endif %}
+                {{ form_row(trickform.medias, {'label': 'Images:'}) }}
+                {{ form_row(trickform.video, {'label': 'Vidéos:'}) }}
+            </div>
+            <div class="container" id="main_infos">
+                {{ form_row(trickform.category, {'label': 'Catégorie'}) }}
+                {{ form_row(trickform.name, {'label': 'Nom'}) }}
+                {{ form_row(trickform.content, {'label': 'Description'}) }}  
+                <div class="pb-4 text-center">
+                    <button type="submit" class="btn btn-primary btn-sm">Confirmer</a>
+                </div>
+            {{ form_end(trickform) }}
+            </div>
+        </div>
+    </div>
+
+</section>
+
+{% endblock %}

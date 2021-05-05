@@ -60,11 +60,11 @@ article, aside, figcaption, figure, footer, header, hgroup, main, nav, section {
 
 body {
   margin: 0;
-  font-family: "Merriweather", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
-  font-size: 1rem;
-  font-weight: 400;
+  font-family: "Segoe UI", "Roboto", -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  font-size: 1.25rem;
+  font-weight: 600;
   line-height: 1.5;
-  color: #212529;
+  color: #041C28;
   text-align: left;
   background-color: #fff;
 }
@@ -74,6 +74,7 @@ body {
 }
 
 hr {
+  padding-bottom: 2.5rem;
   box-sizing: content-box;
   height: 0;
   overflow: visible;
@@ -81,7 +82,12 @@ hr {
 
 h1, h2, h3, h4, h5, h6 {
   margin-top: 0;
-  margin-bottom: 0.5rem;
+  margin-bottom: 0.75rem;
+}
+
+h1, h2 {
+  padding-top: 6.5rem;
+  color: #041C28;
 }
 
 p {
@@ -547,8 +553,8 @@ pre code {
 .container-md,
 .container-sm {
   width: 100%;
-  padding-right: 15px;
-  padding-left: 15px;
+  padding-right: 10px;
+  padding-left: 10px;
   margin-right: auto;
   margin-left: auto;
 }
@@ -10036,7 +10042,7 @@ hr.light {
 @media (min-width: 992px) {
   #mainNav {
     box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
-    background-color: rgba(255, 255, 255, 0.65);
+    background-color: rgba(255, 255, 255, 0.35);
   }
   #mainNav .navbar-brand {
     color: rgba(255, 255, 255, 0.7);
@@ -10075,7 +10081,7 @@ hr.light {
 header.masthead {
   padding-top: 10rem;
   padding-bottom: calc(10rem - 4.5rem);
-  background: linear-gradient(to bottom, rgba(122, 153, 164, 0.4), rgba(122, 153, 164, 0.4)), url("/assets/img/snowboard-masthead.jpg");
+  background: linear-gradient(to bottom, rgba(122, 153, 164, 0.5), rgba(122, 153, 164, 0.5)), url("/assets/img/snowboard-masthead.jpg");
   background-position: center;
   background-repeat: no-repeat;
   background-attachment: scroll;
@@ -10140,6 +10146,217 @@ header.masthead h1 {
   opacity: 1;
 }
 
+#trick_thumbnails {
+  position: relative;
+}
+
+#trick_thumbnails .user-button {
+  position: absolute;
+  top: 2%;
+  right: 1%;
+}
+
+#trick_thumbnails .edit-button {
+  position: absolute;
+  top: 160px;
+  right: 90px;
+}
+
+#trick_thumbnails .delete-button {
+  position: absolute;
+  top: 10px;
+  right: 60px;
+}
+
+#medias_show .video-icon {
+  position: absolute;
+  top: 4rem;
+  right: 9.25rem;
+}
+
+#add_button {
+  padding-bottom: 1.5rem;
+}
+
+#resume {
+  display: block;
+  justify-content: center;
+  flex-direction: column;
+  text-align: center;
+  color: white;
+  background: rgba(26, 102, 116, 0.3);
+  padding: 1.5rem;
+}
+
 .text-white-75 {
   color: rgba(255, 255, 255, 0.75);
+}
+
+.profile-header {
+    transform: translateY(5rem);
+}
+
+#profile {
+  padding-top: 9rem;
+  background: center url("https://www.heberger-image.fr/images/2021/03/19/montagned3c06f4cd8cbf843.jpg");
+}
+
+#profile-box {
+  padding-bottom: 9.5rem;
+}
+
+#profile-box .profile-back {
+  text-align: end;
+}
+
+#profile-pic {
+  padding-left: 1rem;
+}
+
+#profile-pic img {
+  box-shadow: var(--gray-dark) 0.7;
+}
+
+#profile-pic img:hover {
+  border: 0px;
+  background-color: var(--gray-dark);
+}
+
+#imageCollapse input:hover {
+  border: 0px;
+  background-color: var(--gray-dark);
+}
+
+#profile-pres {
+  padding-left: 1rem;
+}
+
+#profile h5 {
+  color: #041C28;
+}
+
+#trick {
+  padding-top: 9rem;
+  background: center url("https://www.heberger-image.fr/images/2021/03/19/montagned3c06f4cd8cbf843.jpg");
+  background-size: cover;
+  height: 75%;
+  position: relative;
+}
+
+#background_picture {
+  position: relative;
+}
+
+#background_picture img {
+  opacity: 80%;
+}
+
+.banner-title {
+  position: absolute;
+  top: 80%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.banner-title-error {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+#trick .user-button {
+  position: absolute;
+  top: 2%;
+  right: 2%;
+}
+
+#trick .user-button a:hover {
+  text-decoration: none;
+}
+
+#media {
+  padding-bottom: 1rem;
+}
+
+#comment_profile_pic {
+  height: 4rem;
+  width: 4rem;
+  box-shadow: var(--gray-dark) 0.7;
+  border: 0px;
+  background-color: var(--gray-dark);
+}
+
+#div_comment_pp {
+  padding-right: 1rem;
+}
+
+#show_comments {
+  font-size: 0.75rem;
+}
+
+#show_comments h4 {
+  font-size: 1rem;
+}
+
+#one_comment {
+  padding-left: 2.5rem;
+}
+
+#one_comment #comment_profile_pic {
+  height: 3rem;
+  width: 3rem;
+}
+
+#comment_username {
+  padding-right: 0.5rem;
+}
+
+#comment_content {
+  box-shadow: var(--gray-dark) 0.7;
+  padding-bottom: 2rem;
+}
+
+#delete-form {
+  position: fixed;
+  z-index: 2;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: block;
+  background: #fff;
+  width: 40%;
+  padding: 30px;
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.4);
+}
+
+.checkbox input[type=checkbox] {
+  display:none;
+}
+
+.checkbox input[type=checkbox] + label{
+  background:url("/assets/img/eye-slash-fill.svg"); 
+  border: 0px;
+  height: 16px;
+  width: 16px;
+  display:inline-block;
+  padding: 0;
+  cursor: pointer;
+}
+
+.checkbox input[type=checkbox]:checked + label{
+  background: url("/assets/img/eye-fill.svg");
+  height: 16px;
+  width: 16px;
+  display:inline-block;
+  padding: 0;
+}
+
+.checkbox-text{
+  position: relative;
+  font-family: Arial;
+  font-size: 14px;
+  padding: 0 6px;
+  top: -4px;
+  cursor: pointer;
 }
