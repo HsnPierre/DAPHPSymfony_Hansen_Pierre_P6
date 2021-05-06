@@ -25,7 +25,7 @@ class MediaController extends AbstractController
     public function delete(Request $request, string $slug)
     {
         $trick_repository = $this->getDoctrine()->getRepository(Trick::class);
-        $trick = $trick_repository->findOneBy(['name' => $slug]);
+        $trick = $trick_repository->findOneBy(['slug' => $slug]);
         $medias = $trick->getMedias();
 
         foreach($medias as $media){

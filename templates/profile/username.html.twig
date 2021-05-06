@@ -102,7 +102,7 @@
                                                 {% for trick in tricks %}
          
                                                     <div class="col-lg-4 col-sm-6" id="trick_thumbnails">
-                                                        <a class="portfolio-box" href="/trick/{{ trick.name }}">
+                                                        <a class="portfolio-box" href="/trick/{{ trick.slug }}">
                                                             <img class="img-fluid" src="{{ asset('assets/img/trick/thumbnails/' ~ trick.mainpic) }}" alt="" />
                                                             <div class="portfolio-box-caption">
                                                                 <div class="project-category text-white-50">{{ trick.category }}</div>

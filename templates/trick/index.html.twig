@@ -111,9 +111,9 @@
                 </div>
                 <hr>
                 <div class="container bg-light" id="show_comments">
-                    {% if trick.comments != null %}
+                    {% if comments != null %}
 
-                        {% for comment in trick.comments %}
+                        {% for comment in comments %}
 
                             <div class="container row row-cols-2 no-gutters" id="one_comment">
                                 <div class="col-auto" id="div_comment_pp">
@@ -141,6 +141,10 @@
                             </div>
 
                         {% endfor %}
+
+                        <div class="container text-center">
+                            <p>{{ knp_pagination_render(comments) }}</p>
+                        </div>
                     {% endif %}
                 </div>
             </div>

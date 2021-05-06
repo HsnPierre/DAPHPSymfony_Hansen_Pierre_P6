@@ -3,13 +3,15 @@ namespace App\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
-use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\TrickRepository")
  * @ORM\Table(name="trick")
+ * @UniqueEntity(fields="name", message="Il existe déjà un trick portant ce nom.")
  */
 
  class Trick
@@ -28,6 +30,12 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
      * )
      */
     private $name;
+
+    /**
+     * @Gedmo\Slug(fields={"name"})
+     * @ORM\Column(type="string", length=128, unique=true)
+     */
+    private $slug;
 
     /**
      * @ORM\Column(type="string")
@@ -337,5 +345,13 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
         }
 
         return $this;
+    }
+
+    /**
+     * Get the value of slug
+     */ 
+    public function getSlug()
+    {
+        return $this->slug;
     }
  }

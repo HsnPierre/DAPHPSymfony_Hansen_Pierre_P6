@@ -17,6 +17,14 @@
                 </div>
             {% endif %}
 
+            {% for message in app.flashes('error') %}
+                <div class="container text-center alert alert-danger">{{ message }}</div>
+            {% endfor %}
+
+            {% for message in app.flashes('success') %}
+                <div class="container text-center alert alert-success">{{ message }}</div>
+            {% endfor %}
+
             <div class="well">
                 <form action="{{ path('security_login') }}" method="post">
                     <fieldset>
@@ -27,9 +35,11 @@
                         <div class="form-group">
                             <label for="password">{{ 'Mot de passe' }}</label>
                             <input type="password" id="password" name="password" class="form-control" />
+                            <a href="/login/forgot" class="font-weight-light">{{ 'Mot de passe oublié ?' }}</a>
                         </div>
                         <input type="hidden" name="_target_path" value="{{ app.request.get('redirect_to') }}"/>
                         <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}"/>
+
                         <button type="submit" class="btn btn-primary">
                             {{ 'Se connecter' }}
                         </button>

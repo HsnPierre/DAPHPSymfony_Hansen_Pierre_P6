@@ -99,6 +99,12 @@ use Symfony\Component\Security\Core\User\UserInterface;
      */
     private $public = [];
 
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $resetToken;
+
+
     public function __construct()
     {
         $this->date = new \DateTime();
@@ -423,6 +429,26 @@ use Symfony\Component\Security\Core\User\UserInterface;
     public function setPublic_mail($public_mail)
     {
         $this->public_mail = $public_mail;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of resetToken
+     */ 
+    public function getResetToken()
+    {
+        return $this->resetToken;
+    }
+
+    /**
+     * Set the value of resetToken
+     *
+     * @return  self
+     */ 
+    public function setResetToken($resetToken)
+    {
+        $this->resetToken = $resetToken;
 
         return $this;
     }

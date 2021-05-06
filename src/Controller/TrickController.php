@@ -7,6 +7,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Session\Session;
+use Knp\Component\Pager\PaginatorInterface;
 use App\Entity\Trick;
 use App\Entity\User;
 use App\Entity\Comment;
@@ -139,15 +140,18 @@ class TrickController extends AbstractController
      *
      * @Route("/trick/{slug}", name="show_trick")
      */
-    public function index(String $slug, Request $request)
+    public function index(String $slug, Request $request, PaginatorInterface $paginator)
     {
         $trick_repository = $this->getDoctrine()->getRepository(Trick::class);
         $comment_repository = $this->getDoctrine()->getRepository(Comment::class);
 
-        $trick = $trick_repository->findOneBy(['name' => $slug]);
+        $trick = $trick_repository->findOneBy(['slug' => $slug]);
 
         $user = $this->getUser();
         $comment = new Comment();
+
+        $posted_comments = $comment_repository->findBy(['trick' => $trick->getId()]);
+        $pag_comments = $paginator->paginate($posted_comments, $request->query->getInt('page', 1), 3);
 
         if($trick){
         
@@ -155,8 +159,6 @@ class TrickController extends AbstractController
                 
                 $form = $this->createForm(CommentType::class, $comment);
                 $form->handleRequest($request);
-                
-                $posted_comments = $comment_repository->findBy(['trick' => $trick->getId()]);
                 
                 if($posted_comments !== null){
                     foreach($posted_comments as $posted_comment){
@@ -194,13 +196,15 @@ class TrickController extends AbstractController
 
                 return $this->render('trick/index.html.twig', [
                         'trick' => $trick,
+                        'comments' => $pag_comments,
                         'commentform' => $form->createView(),
                     ]
                 );
             }
 
             return $this->render('trick/index.html.twig', [
-                    'trick' => $trick
+                    'trick' => $trick,
+                    'comments' => $pag_comments
                 ]
             );
         }
@@ -219,7 +223,7 @@ class TrickController extends AbstractController
 
         $repository = $this->getDoctrine()->getRepository(Trick::class);
 
-        $trick = $repository->findOneBy(['name' => $slug]);
+        $trick = $repository->findOneBy(['slug' => $slug]);
         $user = $this->getUser();
         $date = new \Datetime();
         
@@ -351,7 +355,7 @@ class TrickController extends AbstractController
         if($this->getUser()){
 
             $repository = $this->getDoctrine()->getRepository(Trick::class);
-            $trick = $repository->findOneBy(['name' => $slug]);
+            $trick = $repository->findOneBy(['slug' => $slug]);
 
             if(null !== $request->request->get('delete')) {
 

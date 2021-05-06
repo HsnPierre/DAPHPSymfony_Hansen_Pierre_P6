@@ -10360,3 +10360,7 @@ header.masthead h1 {
   top: -4px;
   cursor: pointer;
 }
+
+.pagination {
+  padding-left: 520px;
+}
